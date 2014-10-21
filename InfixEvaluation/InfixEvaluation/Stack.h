@@ -13,18 +13,29 @@ private:
 			this->next = nullptr;
 		}
 		Element(const T& value, Element* next){
-			this->next = next;
 			this->value = value;
+			this->next = next;
 		}
+		~Element() {
+			// No cascade deletion of elements so no additional work to do
+		}
+	private:
+		Element(const Element& el);
+		void operator=(const Element& el);
 	};
 
 public:
 	Stack();
-	void Push(const T& value);
+	Stack(const Stack<T>& st);
+	Stack<T>& operator=(const Stack<T>& st);
+	~Stack();
+
+
+	void Push(T value);
 	T Pop();
 	T Peak();
 	bool Empty() const;
-	~Stack();
+	void Clean();
 
 private:
 	Element* top;
@@ -39,15 +50,40 @@ Stack<T>::Stack() {
 }
 
 template <class T>
-Stack<T>::~Stack() {
-	Element* current;
-	while (this->top != NULL) {
-		current = this->top;
-		this->top = this->top->next;
-		delete current;
-		--this->count;
+Stack<T>::Stack(const Stack<T>& st) {
+	if (this != &st) {
+		this->count = 0;
+		this->top = nullptr;
+		Stack<T> temp;
+		for (Element* it = st.top; it != NULL; it = it->next) {
+			temp.Push(it->value);
+		}
+		while (!temp.Empty()) {
+			this->Push(temp.Pop());
+		}
 	}
-	delete this->top;
+}
+
+template <class T>
+Stack<T>& Stack<T>::operator=(const Stack& st) {
+	if (this != &st) {
+		this->Clean();
+		Stack<T> temp;
+		for (Element* it = st.top; it != NULL; it = it->next) {
+			temp.Push(it->value);
+		}
+		while (!temp.Empty()) {
+			this->Push(temp.Pop());
+		}
+	}
+
+	return *this;
+}
+
+template <class T>
+Stack<T>::~Stack() {
+	if (!this->Empty())
+		this->Clean();
 }
 
 template <class T>
@@ -56,14 +92,17 @@ bool Stack<T>::Empty() const {
 }
 
 template <class T>
-void Stack<T>::Push(const T& value) {
+void Stack<T>::Push(T value) {
 	this->top = new Element(value, this->top);
 	++this->count;
 }
 
 template <class T>
 T Stack<T>::Peak() {
-	return this->top->value;
+	if (this->top)
+		return this->top->value;
+	else
+		throw "Stack is empty!";
 }
 
 template <class T>
@@ -74,4 +113,14 @@ T Stack<T>::Pop() {
 	delete top;
 	--this->count;
 	return value;
+}
+
+template <class T>
+void Stack<T>::Clean() {
+	Element* it;
+	while (this->top) {
+		it = this->top;
+		this->top = it->next;
+		delete it;
+	}
 }
