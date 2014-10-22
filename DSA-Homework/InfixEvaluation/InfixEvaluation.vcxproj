@@ -77,8 +77,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="OperatorManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Associativity.h" />
+    <ClInclude Include="OperatorManager.h" />
     <ClInclude Include="Stack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
