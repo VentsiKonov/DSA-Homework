@@ -40,7 +40,7 @@ public:
 		for (size_t i = 0; i < MAX_OPERATORS; i++) {
 			if (operators[i])
 				std::cout 
-				<< (char)(i+65) << " " 
+				<< (char)i << " " 
 				<< operators[i]->operation << " "
 				<< operators[i]->assoc << " " 
 				<< operators[i]->precedence 

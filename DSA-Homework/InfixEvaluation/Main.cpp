@@ -1,29 +1,33 @@
 #include <iostream>
-#include "Stack.h"
-#include <string.h>
 #include <fstream>
+
+#include "Stack.h"
 #include "OperatorManager.h"
 
-using namespace std;
+using std::endl;
+using std::ifstream;
+using std::cout;
+using std::ios;
 
 int main(int argc, char* argv[]) {
 		{
 			argv[2] = "E:\\GitHub\\DSA-Homework\\DSA-Homework\\Debug\\TestOperators1.txt";
+			const char* operationsFile = argv[2];
+			//const char* expression = argv[1];
 
+			ifstream file(operationsFile, ios::in); // Doesn't throw exception on failure
 
-			ifstream file(argv[2], ios::in);
-			
 			try {
 				OperatorManager OM(file); // throws only (const char*)
 				file.close();
 
-
+				OM.PrintOperators();
 
 			}
 			catch (const char* ex) {
-				file.close();
 				std::cerr << ex;
 			}
+
 
 		}
 	_CrtDumpMemoryLeaks();
