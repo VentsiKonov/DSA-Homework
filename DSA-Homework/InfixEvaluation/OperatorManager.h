@@ -14,32 +14,16 @@ private:
 		char operation;
 		int precedence;
 		Associativity assoc;
-		Operator(char o, int p, int a) {
-			if (!inAllowedOperators(o)) {
-				throw "Invalid operation";
-			}
-			if (!(a == 1 || a == 0)) {
-				throw "Invalid associativity";
-			}
-			if (p < 0 || p > 10) {
-				throw "Invalid precedence";
-			}
-			operation = o;
-			precedence = p;
-			assoc = a ? RIGHT : LEFT;
-		}
+		Operator(char o, int p, int a);
+
 	private:
 		Operator();
 		Operator(const Operator&);
 		void operator=(const Operator&);
-		bool inAllowedOperators(char o) {
-			for (size_t i = 0; i < strlen(OPERATIONS); i++) {
-				if (OPERATIONS[i] == o) return true;
-			}
-			return false;
-		}
+		bool inAllowedOperators(char o);
 	};
 
+	// Container for the operations -> O(1) indexing
 	Operator** operators;
 
 	void operator=(const OperatorManager&);

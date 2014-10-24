@@ -6,18 +6,25 @@
 
 using namespace std;
 
-int main() {
+int main(int argc, char* argv[]) {
 		{
-			ifstream file("E:\\GitHub\\DSA-Homework\\DSA-Homework\\Debug\\TestOperators1.txt", ios::in);
-			OperatorManager OM(file);
-			file.close();
-			OM.PrintOperators();
-			for (size_t i = 40; i < 50; i++) {
-				cout << i << " " << (char)i << endl;
+			argv[2] = "E:\\GitHub\\DSA-Homework\\DSA-Homework\\Debug\\TestOperators1.txt";
+
+
+			ifstream file(argv[2], ios::in);
+			
+			try {
+				OperatorManager OM(file); // throws only (const char*)
+				file.close();
+
+
+
+			}
+			catch (const char* ex) {
+				file.close();
+				std::cerr << ex;
 			}
 
-			// Decide on whether keeping to the assoc array idea or changing it when it's not too late!!
-			// Ask about double and symbols for operations
 		}
 	_CrtDumpMemoryLeaks();
 	return 0;
