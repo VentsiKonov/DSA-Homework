@@ -41,7 +41,7 @@ double GetNumber(char* &string) {
 	
 	TrimStart(string);
 	
-	while (((*string >= '0' && *string <= '9') || (*string == ',' || *string == '.' || *string == '-')) && count < 10) {
+	while (((*string >= '0' && *string <= '9') || (*string == ',' || *string == '.' || *string == '-')) && count < 10) { // Ugly -> TODO: Split to several bools
 		if (*string == ',') 
 			subs[count++] = '.';
 		else 
@@ -60,10 +60,25 @@ char GetChar(char* &string) {
 	return *(string++);
 }
 
-double Solve(const char* expr, const OperatorManager& OM) {
-	
+double Solve(char* expr, const OperatorManager& OM) {
+
 	Stack<char> operations;
 	Stack<double> numbers;
+
+	while (*expr != '\0') {
+		TrimStart(expr);
+		if ((*expr >= '0' && *expr <= '9') || (*expr == '-' && *(expr + 1) != ' ')) // Ugly -> make it understandable
+			numbers.Push(GetNumber(expr));
+		else
+			operations.Push(GetChar(expr));
+
+		#define START_WORK_HERE_NEXT_TIME
+
+	}
+
+	while (!operations.Empty()) cout << operations.Pop() << endl;
+	while (!numbers.Empty()) cout << numbers.Pop() << endl;
+
 	return 0;
 }
 
@@ -76,25 +91,16 @@ int main(int argc, char* argv[]) {
 			const char* operationsFile = argv[2];
 			char* expr = argv[1];
 			
-			//ifstream file(operationsFile, ios::in); // Doesn't throw exception on failure
-			//
-			//OperatorManager OM(file); // throws only (const char*)
-			//file.close();
-			//
-			//OM.PrintOperators();
-			//
-			//Solve(expr, OM);
+			ifstream file(operationsFile, ios::in); // Doesn't throw exception on failure
 			
-			while (*expr != '\0') {
-				TrimStart(expr);
-				if ((*expr >= '0' && *expr <= '9') || (*expr == '-' && *(expr+1) != ' '))
-					cout << GetNumber(expr);
-				else
-					cout << GetChar(expr);
-
-				cout << endl;
-
-			}
+			OperatorManager OM(file); // throws only (const char*)
+			file.close();
+			
+			OM.PrintOperators();
+			
+			Solve(expr, OM);
+			
+			
 
 		}
 	_CrtDumpMemoryLeaks();
