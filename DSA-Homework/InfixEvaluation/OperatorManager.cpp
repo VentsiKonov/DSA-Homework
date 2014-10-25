@@ -52,14 +52,14 @@ void OperatorManager::Load(std::ifstream& file) {
 	}
 }
 
-Associativity OperatorManager::GetAssociativity(char operation) {
+Associativity OperatorManager::GetAssociativity(char operation) const {
 	if (operators[operation])
 		return operators[operation]->assoc;
 
 	throw "No such operation: " + operation;
 }
 
-int OperatorManager::GetPrecedence(char operation) {
+int OperatorManager::GetPrecedence(char operation) const {
 	if (operators[operation])
 		return operators[operation]->precedence;
 
@@ -81,9 +81,9 @@ OperatorManager::OperatorManager(std::ifstream& file) {
 	try {
 		this->Load(file);
 	}
-	catch (const char*) {
+	catch (const char* ex) {
 		delete[] operators;
-		throw;
+		std::cerr << "Error loading operators from file: " << ex;
 	}
 }
 
