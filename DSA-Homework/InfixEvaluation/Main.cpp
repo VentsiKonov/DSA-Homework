@@ -71,10 +71,10 @@ double Solve(char* expr, const OperatorManager& OM) {
 	while (*expr != '\0') { // GetNumber() and GetOperation() move the pointer
 		TrimStart(expr); // Essential
 
-		if (IsNumericSymbol(*expr) || (*expr == '-' && *(expr + 1) != ' ')) { // *expr -> positive or negative number
+		if (IsNumericSymbol(*expr) || (*expr == '-' && *(expr + 1) != ' ')) { // *expr is positive or negative number
 			numbers.Push(GetNumber(expr));
 		}
-		else { // *expr -> Operator
+		else { // *expr is Operator
 			op = GetOperation(expr);
 
 			if (operations.Empty() || op == '(') {
@@ -88,6 +88,9 @@ double Solve(char* expr, const OperatorManager& OM) {
 					if (operations.Empty())
 						throw "Invalid expression -> Mismached brackets: too many ')'";
 
+					if (numbers.Size() < 2)
+						throw "Invalid expression -> Not enough numbers";
+
 					numbers.Push(OM.Apply(tos, numbers.Pop(), numbers.Pop()));
 				}
 				continue;
@@ -95,6 +98,13 @@ double Solve(char* expr, const OperatorManager& OM) {
 
 			stackTopPrecedence = (operations.Peak() == '(' ? -1 : OM.GetPrecedence(operations.Peak())); // Give ( lowest possible precedence (-1)
 			opPrecedence = OM.GetPrecedence(op);
+
+
+
+
+			///
+			/// \/\/\/ THIS BLOCK NEEDS REWRITING \/\/\/
+			///
 
 			if (stackTopPrecedence < opPrecedence) {
 				operations.Push(op);
@@ -117,6 +127,14 @@ double Solve(char* expr, const OperatorManager& OM) {
 					throw "Invalid expression -> Cannot solve mixed associativity operators!";
 				}
 			}
+
+			///
+			/// /\/\/\ THIS BLOCK NEEDS REWRITING /\/\/\
+			///
+
+
+
+
 		} // --operator
 
 	} // --while
@@ -127,7 +145,11 @@ double Solve(char* expr, const OperatorManager& OM) {
 		numbers.Push(OM.Apply(operations.Pop(), numbers.Pop(), numbers.Pop()));
 	}
 
+	if (numbers.Empty())
+		throw "Nothing was calculated!";
+
 	double result = numbers.Pop();
+
 	if (!numbers.Empty())
 		throw "Invalid expression -> Some numbers left";
 

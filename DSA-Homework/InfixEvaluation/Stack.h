@@ -33,49 +33,32 @@ public:
 
 	void Push(T value);
 	T Pop();
-	T Peak();
+	T Peak() const;
 	bool Empty() const;
 	void Clean();
+	size_t Size() const;
 
 private:
 	Element* top;
 	size_t count;
+	void CopyData(const Stack<T>& st);
 
 };
 
 template <class T>
 Stack<T>::Stack() {
 	this->count = 0;
-	this->top = nullptr;
+	this->top = NULL;
 }
 
 template <class T>
 Stack<T>::Stack(const Stack<T>& st) {
-	if (this != &st) {
-		this->count = 0;
-		this->top = nullptr;
-		Stack<T> temp;
-		for (Element* it = st.top; it != NULL; it = it->next) {
-			temp.Push(it->value);
-		}
-		while (!temp.Empty()) {
-			this->Push(temp.Pop());
-		}
-	}
+	CopyData(st);
 }
 
 template <class T>
 Stack<T>& Stack<T>::operator=(const Stack& st) {
-	if (this != &st) {
-		this->Clean();
-		Stack<T> temp;
-		for (Element* it = st.top; it != NULL; it = it->next) {
-			temp.Push(it->value);
-		}
-		while (!temp.Empty()) {
-			this->Push(temp.Pop());
-		}
-	}
+	CopyData(st);
 
 	return *this;
 }
@@ -98,7 +81,7 @@ void Stack<T>::Push(T value) {
 }
 
 template <class T>
-T Stack<T>::Peak() {
+T Stack<T>::Peak() const {
 	if (this->top)
 		return this->top->value;
 	else
@@ -117,10 +100,36 @@ T Stack<T>::Pop() {
 
 template <class T>
 void Stack<T>::Clean() {
-	Element* it;
-	while (this->top) {
-		it = this->top;
-		this->top = it->next;
-		delete it;
+	if (!this->Empty()) {
+		Element* it;
+		while (this->top) {
+			it = this->top;
+			this->top = it->next;
+			delete it;
+			--this->count;
+		}
 	}
+	else {
+		this->count = 0;
+		this->top = NULL;
+	}
+}
+
+template <class T>
+void Stack<T>::CopyData(const Stack<T>& st) {
+	if (this != &st) {
+		this->Clean();
+		Stack<T> temp;
+		for (Element* it = st.top; it != NULL; it = it->next) {
+			temp.Push(it->value);
+		}
+		while (!temp.Empty()) {
+			this->Push(temp.Pop());
+		}
+	}
+}
+
+template <class T>
+size_t Stack<T>::Size() const {
+	return this->count;
 }
