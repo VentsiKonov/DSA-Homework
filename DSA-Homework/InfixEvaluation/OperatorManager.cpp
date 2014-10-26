@@ -96,7 +96,6 @@ OperatorManager::~OperatorManager() {
 
 double OperatorManager::Apply(char op, double lhs, double rhs) const {
 	double result = 0;
-	std::cout << lhs << op << rhs << '\n';
 	switch (operators[op]->operation) {
 		case '+':
 			result = lhs + rhs;

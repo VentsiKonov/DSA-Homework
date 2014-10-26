@@ -1,13 +1,9 @@
 #include <iostream>
-#include <fstream>
-
 #include "Stack.h"
 #include "OperatorManager.h"
 
-using std::endl;
 using std::ifstream;
 using std::cout;
-using std::ios;
 
 bool IsNumericSymbol(char s) {
 	return (s >= '0' && s <= '9');
@@ -21,13 +17,13 @@ bool ValidBrackets(const char* expr) {
 		else if (*expr == ')') --count;
 
 		if (count < 0) {
-			std::cerr << "Unexpected " << *expr << " at position " << expr-start<< endl;
+			std::cerr << "Unexpected " << *expr << " at position " << expr-start << '\n';
 			return 0;
 		}
 		++expr;
 	}
 	if (count != 0) {
-		std::cerr << "Expcted " << count << " )" << endl;
+		std::cerr << "Expcted " << count << " )" << '\n';
 		return false;
 	}
 
@@ -61,7 +57,6 @@ double GetNumber(char* &string) {
 }
 
 char GetOperation(char* &string) {
-	//TrimStart(string);
 	return *(string++);
 }
 
@@ -69,6 +64,9 @@ double Solve(char* expr, const OperatorManager& OM) {
 
 	Stack<char> operations;
 	Stack<double> numbers;
+	char op;
+	int stackTopPrecedence;
+	int opPrecedence;
 
 	while (*expr != '\0') { // GetNumber() and GetOperation() move the pointer
 		TrimStart(expr); // Essential
@@ -77,17 +75,24 @@ double Solve(char* expr, const OperatorManager& OM) {
 			numbers.Push(GetNumber(expr));
 		}
 		else { // Operator
-			char op = GetOperation(expr);
+			op = GetOperation(expr);
 
-			if (operations.Empty()) {
+			if (operations.Empty() || op == '(') {
 				operations.Push(op);
 				continue;
 			}
 
-			// Brackets work goes here
+			if (op == ')') {
+				char top;
+				while ((top = operations.Pop()) != '(') {
+					numbers.Push(OM.Apply(top, numbers.Pop(), numbers.Pop()));
+				}
+				continue;
+			}
 
-			int stackTopPrecedence = OM.GetPrecedence(operations.Peak());
-			int opPrecedence = OM.GetPrecedence(op);
+			char top = operations.Peak();
+			stackTopPrecedence = (top == '(' ? -1 : OM.GetPrecedence(top)); // Give ( lowest possible precedence
+			opPrecedence = OM.GetPrecedence(op);
 			
 			if (stackTopPrecedence < opPrecedence) {
 				operations.Push(op);
@@ -107,28 +112,30 @@ double Solve(char* expr, const OperatorManager& OM) {
 		numbers.Push(OM.Apply(operations.Pop(), numbers.Pop(), numbers.Pop()));
 	}
 
+	double result = numbers.Pop();
+	//if (!numbers.Empty())
+	//	throw "More operations are expected!";
 
-
-	return numbers.Pop();
+	return result;
 }
 
 
 int main(int argc, char* argv[]) {
 		{
-			//argv[2] = "E:\\GitHub\\DSA-Homework\\DSA-Homework\\Debug\\simpleTest.txt";
-			//argv[1] = "3 + 2 * 5 - 1";
+			argv[2] = "E:\\GitHub\\DSA-Homework\\DSA-Homework\\Debug\\simpleTest.txt";
+			argv[1] = "3 * ( 3 + 2 * 2 ) + 5";
 			
 			const char* operationsFile = argv[2];
 			char* expr = argv[1];
 			
-			ifstream file(operationsFile, ios::in); // Doesn't throw exception on failure
+			ifstream file(operationsFile); // Doesn't throw exception on failure
 			
 			OperatorManager OM(file); // throws only (const char*)
 			file.close();
 			
 			//OM.PrintOperators();
 			
-			cout << Solve(expr, OM) << endl;
+			cout << Solve(expr, OM);
 
 		}
 	_CrtDumpMemoryLeaks();
