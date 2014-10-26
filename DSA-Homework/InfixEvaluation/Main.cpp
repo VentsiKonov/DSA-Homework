@@ -9,27 +9,6 @@ bool IsNumericSymbol(char s) {
 	return (s >= '0' && s <= '9');
 }
 
-bool ValidBrackets(const char* expr) {
-	int count = 0;
-	const char* start = expr;
-	while (*expr != '\0') {
-		if (*expr == '(') ++count;
-		else if (*expr == ')') --count;
-
-		if (count < 0) {
-			std::cerr << "Unexpected " << *expr << " at position " << expr - start << '\n';
-			return 0;
-		}
-		++expr;
-	}
-	if (count != 0) {
-		std::cerr << "Expcted " << count << " )" << '\n';
-		return false;
-	}
-
-	return true;
-}
-
 void TrimStart(char* &string) {
 	while (*string == ' ')
 		++string;
