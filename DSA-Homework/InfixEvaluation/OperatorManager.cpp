@@ -93,3 +93,28 @@ OperatorManager::~OperatorManager() {
 	}
 	delete operators;
 }
+
+double OperatorManager::Apply(char op, double lhs, double rhs) const {
+	double result = 0;
+	std::cout << lhs << op << rhs << '\n';
+	switch (operators[op]->operation) {
+		case '+':
+			result = lhs + rhs;
+			break;
+		case '-':
+			result = lhs - rhs;
+			break;
+		case '/':
+			if (rhs == 0) 
+				throw std::string("Division by zero! Operation: " + op).c_str();
+			result = lhs / rhs;
+			break;
+		case '*':
+			result = lhs * rhs;
+			break;
+		default:
+			throw std::string("Unknown operation: " + op).c_str();
+	}
+
+	return result;
+}

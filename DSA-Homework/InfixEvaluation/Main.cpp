@@ -9,6 +9,10 @@ using std::ifstream;
 using std::cout;
 using std::ios;
 
+bool IsNumericSymbol(char s) {
+	return (s >= '0' && s <= '9');
+}
+
 bool ValidBrackets(const char* expr) {
 	int count = 0;
 	const char* start = expr;
@@ -36,12 +40,13 @@ void TrimStart(char* &string) {
 }
 
 double GetNumber(char* &string) { 
+	
 	size_t count = 0;
 	char subs[12]; // 12 -> Maximal possible length of unsigned int and double
 	
-	TrimStart(string);
+	//TrimStart(string);
 	
-	while (((*string >= '0' && *string <= '9') || (*string == ',' || *string == '.' || *string == '-')) && count < 10) { // Ugly -> TODO: Split to several bools
+	while ((IsNumericSymbol(*string) || (*string == ',' || *string == '.' || *string == '-')) && count < 10) { // Ugly -> TODO: Split to several bools
 		if (*string == ',') 
 			subs[count++] = '.';
 		else 
@@ -55,8 +60,8 @@ double GetNumber(char* &string) {
 	return atof(subs);
 }
 
-char GetChar(char* &string) {
-	TrimStart(string);
+char GetOperation(char* &string) {
+	//TrimStart(string);
 	return *(string++);
 }
 
@@ -65,28 +70,53 @@ double Solve(char* expr, const OperatorManager& OM) {
 	Stack<char> operations;
 	Stack<double> numbers;
 
-	while (*expr != '\0') {
-		TrimStart(expr);
-		if ((*expr >= '0' && *expr <= '9') || (*expr == '-' && *(expr + 1) != ' ')) // Ugly -> make it understandable
+	while (*expr != '\0') { // GetNumber() and GetOperation() move the pointer
+		TrimStart(expr); // Essential
+
+		if (IsNumericSymbol(*expr) || (*expr == '-' && *(expr + 1) != ' ')) { // positive or negative number
 			numbers.Push(GetNumber(expr));
-		else
-			operations.Push(GetChar(expr));
+		}
+		else { // Operator
+			char op = GetOperation(expr);
 
-		#define START_WORK_HERE_NEXT_TIME
+			if (operations.Empty()) {
+				operations.Push(op);
+				continue;
+			}
 
+			// Brackets work goes here
+
+			int stackTopPrecedence = OM.GetPrecedence(operations.Peak());
+			int opPrecedence = OM.GetPrecedence(op);
+			
+			if (stackTopPrecedence < opPrecedence) {
+				operations.Push(op);
+			}
+			else if (stackTopPrecedence > opPrecedence) {
+				numbers.Push(OM.Apply(operations.Pop(), numbers.Pop(), numbers.Pop()));
+				--expr; // In case there is more than one preciding operation in the operations stack
+			}
+			else { // The two operations are of the same precedence
+
+			}
+		} // --operator
+
+	} // --while
+
+	while (!operations.Empty()) {
+		numbers.Push(OM.Apply(operations.Pop(), numbers.Pop(), numbers.Pop()));
 	}
 
-	while (!operations.Empty()) cout << operations.Pop() << endl;
-	while (!numbers.Empty()) cout << numbers.Pop() << endl;
 
-	return 0;
+
+	return numbers.Pop();
 }
 
 
 int main(int argc, char* argv[]) {
 		{
-			argv[2] = "E:\\GitHub\\DSA-Homework\\DSA-Homework\\Debug\\TestOperators1.txt";
-			argv[1] = "31.41428 a ( 5 b 32 f 10 e -230) c 324 d 17";
+			//argv[2] = "E:\\GitHub\\DSA-Homework\\DSA-Homework\\Debug\\simpleTest.txt";
+			//argv[1] = "3 + 2 * 5 - 1";
 			
 			const char* operationsFile = argv[2];
 			char* expr = argv[1];
@@ -96,11 +126,9 @@ int main(int argc, char* argv[]) {
 			OperatorManager OM(file); // throws only (const char*)
 			file.close();
 			
-			OM.PrintOperators();
+			//OM.PrintOperators();
 			
-			Solve(expr, OM);
-			
-			
+			cout << Solve(expr, OM) << endl;
 
 		}
 	_CrtDumpMemoryLeaks();
