@@ -34,6 +34,9 @@ void OperatorManager::Load(std::ifstream& file) {
 	char operation;
 	int precedence, assoc;
 
+	if (!file.good())
+		throw "File not available for reading!";
+
 	while (file.good()) {
 		file >> symbol
 			 >> operation
@@ -63,7 +66,7 @@ int OperatorManager::GetPrecedence(char operation) const {
 	if (operators[operation])
 		return operators[operation]->precedence;
 
-	throw "No such operation: " + operation;
+	throw std::string("No such operation: " + operation).c_str();
 }
 
 OperatorManager::OperatorManager(std::ifstream& file) {
@@ -81,9 +84,9 @@ OperatorManager::OperatorManager(std::ifstream& file) {
 	try {
 		this->Load(file);
 	}
-	catch (const char* ex) {
+	catch (const char*) {
 		delete[] operators;
-		std::cerr << "Error loading operators from file: " << ex;
+		throw;
 	}
 }
 
