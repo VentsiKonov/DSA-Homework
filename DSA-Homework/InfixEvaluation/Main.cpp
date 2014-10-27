@@ -43,9 +43,10 @@ double Solve(char* expr, const OperatorManager& OM) {
 
 	Stack<char> operations;
 	Stack<double> numbers;
-	char op;
-	int stackTopPrecedence;
-	int opPrecedence;
+
+	char op, stackTop;
+	int stackTopPrecedence, opPrecedence;
+	Associativity opAssoc, stackTopAssoc;
 
 	while (*expr != '\0') { // GetNumber() and GetOperation() move the pointer
 		TrimStart(expr); // Essential
@@ -75,43 +76,24 @@ double Solve(char* expr, const OperatorManager& OM) {
 				continue;
 			}
 
-			stackTopPrecedence = (operations.Peak() == '(' ? -1 : OM.GetPrecedence(operations.Peak())); // Give ( lowest possible precedence (-1)
+			stackTop = operations.Peak();
+			stackTopPrecedence = (stackTop == '(' ? -1 : OM.GetPrecedence(stackTop)); // Give '(' lowest possible precedence (-1)
+			stackTopAssoc = (stackTop == '(' ? Associativity::RIGHT : OM.GetAssociativity(stackTop)); // Give '(' right associativity
+
 			opPrecedence = OM.GetPrecedence(op);
+			opAssoc = OM.GetAssociativity(op);
+			bool equalAssoc = (opAssoc == stackTopAssoc);
 
-
-
-
-			///
-			/// \/\/\/ THIS BLOCK NEEDS REWRITING \/\/\/
-			///
-
-			if (stackTopPrecedence < opPrecedence) {
+			if (stackTopPrecedence < opPrecedence || (stackTopPrecedence == opPrecedence && equalAssoc && opAssoc == Associativity::RIGHT)) {
 				operations.Push(op);
 			}
-			else if (stackTopPrecedence > opPrecedence) {
+			else if (stackTopPrecedence > opPrecedence || (equalAssoc && opAssoc == Associativity::LEFT)) {
 				numbers.Push(OM.Apply(operations.Pop(), numbers.Pop(), numbers.Pop()));
 				--expr; // In case there is more than one preciding operation in the operations stack
 			}
-			else { // The two operations are of the same precedence
-				if (OM.GetAssociativity(op) == OM.GetAssociativity(operations.Peak())) {
-					if (OM.GetAssociativity(op) == Associativity::RIGHT) {
-						operations.Push(op);
-					}
-					else {
-						numbers.Push(OM.Apply(operations.Pop(), numbers.Pop(), numbers.Pop()));
-						--expr; // In case there is more than one preciding operation in the operations stack
-					}
-				}
-				else { // Operations are of the same precedence and different associativity
-					throw "Invalid expression -> Cannot solve mixed associativity operators!";
-				}
+			else { // The two operations are of the same precedence and different associativity
+				throw "Invalid expression -> Cannot solve mixed associativity operators!";
 			}
-
-			///
-			/// /\/\/\ THIS BLOCK NEEDS REWRITING /\/\/\
-			///
-
-
 
 
 		} // --operator
@@ -119,7 +101,7 @@ double Solve(char* expr, const OperatorManager& OM) {
 	} // --while
 
 	while (!operations.Empty()) {
-		if (operations.Peak() == '(') 
+		if (operations.Peak() == '(')
 			throw "Invalid expression -> Mismached brackets: too many '('";
 		numbers.Push(OM.Apply(operations.Pop(), numbers.Pop(), numbers.Pop()));
 	}
