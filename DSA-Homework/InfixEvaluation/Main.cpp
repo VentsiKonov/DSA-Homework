@@ -63,15 +63,14 @@ double Solve(char* expr, const OperatorManager& OM) {
 			}
 
 			if (op == ')') { // Never push ) in the operator stack
-				char tos;
-				while ((tos = operations.Pop()) != '(') {
+				while ((stackTop = operations.Pop()) != '(') {
 					if (operations.Empty())
 						throw "Invalid expression -> Mismached brackets: too many ')'";
 
 					if (numbers.Size() < 2)
 						throw "Invalid expression -> Not enough numbers";
 
-					numbers.Push(OM.Apply(tos, numbers.Pop(), numbers.Pop()));
+					numbers.Push(OM.Apply(stackTop, numbers.Pop(), numbers.Pop()));
 				}
 				continue;
 			}
@@ -84,18 +83,17 @@ double Solve(char* expr, const OperatorManager& OM) {
 			opAssoc = OM.GetAssociativity(op);
 			bool equalAssoc = (opAssoc == stackTopAssoc);
 
+					// Either different precedence or equal precedence and equal RIGHT associativity
 			if (stackTopPrecedence < opPrecedence || (stackTopPrecedence == opPrecedence && equalAssoc && opAssoc == Associativity::RIGHT)) {
-				// Either different precedence or equal precedence and equal RIGHT associativity
 				operations.Push(op);
 			}
+					// Either different precedence or equal precedence and equal LEFT associativity
 			else if (stackTopPrecedence > opPrecedence || (equalAssoc && opAssoc == Associativity::LEFT)) {
-				// Either different precedence or equal precedence and equal LEFT associativity
 				numbers.Push(OM.Apply(operations.Pop(), numbers.Pop(), numbers.Pop()));
 				--expr; // In case there is more than one preciding operation in the operations stack
 			}
-			else { // The two operations are of the same precedence and different associativity
+			else	// The two operations are of equal precedence and different associativity
 				throw "Invalid expression -> Cannot solve mixed associativity operators!";
-			}
 
 
 		} // --operator
