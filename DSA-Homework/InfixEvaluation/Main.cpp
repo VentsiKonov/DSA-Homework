@@ -85,9 +85,11 @@ double Solve(char* expr, const OperatorManager& OM) {
 			bool equalAssoc = (opAssoc == stackTopAssoc);
 
 			if (stackTopPrecedence < opPrecedence || (stackTopPrecedence == opPrecedence && equalAssoc && opAssoc == Associativity::RIGHT)) {
+				// Either different precedence or equal precedence and equal RIGHT associativity
 				operations.Push(op);
 			}
 			else if (stackTopPrecedence > opPrecedence || (equalAssoc && opAssoc == Associativity::LEFT)) {
+				// Either different precedence or equal precedence and equal LEFT associativity
 				numbers.Push(OM.Apply(operations.Pop(), numbers.Pop(), numbers.Pop()));
 				--expr; // In case there is more than one preciding operation in the operations stack
 			}
