@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <iomanip>
 #include "Stack.h"
 #include "OperatorManager.h"
 
@@ -117,34 +119,72 @@ double Solve(char* expr, const OperatorManager& OM) {
 	return result;
 }
 
+void Test() {
+	const char* opFilePath = "E:\\GitHub\\DSA-Homework\\DSA-Homework\\Debug\\Tests\\advancedTest.txt";
+	const char* exprFilePath = "E:\\GitHub\\DSA-Homework\\DSA-Homework\\Debug\\Tests\\expr.txt";
+	ifstream opFile(opFilePath);
+	ifstream exprFile(exprFilePath);
+	OperatorManager OM(opFile);
+	opFile.close();
+	std::string expr;
+	std::string expected;
+	std::cout << std::fixed << std::setprecision(15);
+	int i = 0, c = 0;
+	while (exprFile.good()) {
+		std::getline(exprFile, expr);
+		std::getline(exprFile, expected);
+		char* e = new char[expr.length() + 1];
+		strcpy_s(e, expr.length() + 1, expr.c_str());
+		long double result;
+		try {
+			result = Solve(e, OM);
+			if ((double)result != atof(expected.c_str())) {
+				std::cout << i++ << " :: \n" << result << "\n" << expected << '\n';
+				++c;
+			}
+
+			delete e;
+		}
+		catch (const char*) {
+			//std::cout << i++ << " :: \n" << ex << "\n" << expected << '\n';
+			++i;
+			delete e;
+			continue;
+		}
+	}
+
+	std::cout << "\n\n" << c;
+
+}
+
 int main(int argc, char* argv[]) {
 
 	//argv[2] = "E:\\GitHub\\DSA-Homework\\DSA-Homework\\Debug\\Tests\\advancedTest.txt";
 	//argv[1] = "31 a ( 5 b 32 f 10 e -230 ) c 324 d 17";
 	//argc = 3;
 
-	if (argc < 3) {
-		cout << "Usage: ";
-		cout << "InfixEvaluation \"<expression>\" <operators file>";
-		return 1;
-	}
-
-	const char* operationsFile = argv[2];
-	char* expr = argv[1];
-
-	ifstream file(operationsFile);
-
-	try {
-
-		OperatorManager OM(file); // throws only (const char*)
-		cout << Solve(expr, OM);
-
-	}
-	catch (const char* ex) {
-		cout << ex;
-	}
-
-	file.close();
-
+	//if (argc < 3) {
+	//	cout << "Usage: ";
+	//	cout << "InfixEvaluation \"<expression>\" <operators file>";
+	//	return 1;
+	//}
+	//
+	//const char* operationsFile = argv[2];
+	//char* expr = argv[1];
+	//
+	//ifstream file(operationsFile);
+	//
+	//try {
+	//
+	//	OperatorManager OM(file); // throws only (const char*)
+	//	cout << Solve(expr, OM);
+	//
+	//}
+	//catch (const char* ex) {
+	//	cout << ex;
+	//}
+	//
+	//file.close();
+	Test();
 	return 0;
 }

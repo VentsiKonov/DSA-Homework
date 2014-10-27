@@ -11,9 +11,7 @@ OperatorManager::Operator::Operator(char o, int p, int a) {
 	if (!(a == 1 || a == 0)) {
 		throw "Invalid associativity";
 	}
-	if (p < 0 || p > 10) {
-		throw "Invalid precedence";
-	}
+
 	operation = o;
 	precedence = p;
 	assoc = a ? RIGHT : LEFT;
