@@ -137,8 +137,9 @@ double Solve(char* expr, const OperatorManager& OM) {
 
 int main(int argc, char* argv[]) {
 
-	//argv[2] = "E:\\GitHub\\DSA-Homework\\DSA-Homework\\Debug\\simpleTest.txt1";
-	//argv[1] = "( ( 3 + 7 ) * 8 + 20";
+	//argv[2] = "E:\\GitHub\\DSA-Homework\\DSA-Homework\\Debug\\Tests\\advancedTest.txt";
+	//argv[1] = "31 a ( 5 b 32 f 10 e -230 ) c 324 d 17";
+	//argc = 3;
 
 	if (argc < 3) {
 		cout << "Usage: ";
