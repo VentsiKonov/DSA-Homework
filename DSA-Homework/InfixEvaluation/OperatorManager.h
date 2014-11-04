@@ -10,19 +10,6 @@ public:
 	~OperatorManager();
 	void Load(std::ifstream& file);
 
-	// DEBUG ONLY
-	void PrintOperators() {
-		for (size_t i = 0; i < MAX_OPERATORS; i++) {
-			if (operators[i])
-				std::cout
-				<< (char)i << " "
-				<< operators[i]->operation << " "
-				<< operators[i]->assoc << " "
-				<< operators[i]->precedence
-				<< std::endl;
-		}
-	}
-
 	int GetPrecedence(char operation) const;
 	Associativity GetAssociativity(char operation) const;
 	double Apply(char operation, double lhs, double rhs) const;

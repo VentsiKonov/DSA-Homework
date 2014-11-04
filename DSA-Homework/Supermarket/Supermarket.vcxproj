@@ -11,10 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{BCC27B79-CFDA-4915-91C2-1331A5A28E62}</ProjectGuid>
+    <ProjectGuid>{E5EFBC1E-7C46-432C-88C7-3050CB48F315}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>InfixEvaluation</RootNamespace>
-    <ProjectName>InfixEvaluation</ProjectName>
+    <RootNamespace>Supermarket</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -57,7 +56,6 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -78,13 +76,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="OperatorManager.cpp" />
+    <ClInclude Include="List.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Associativity.h" />
-    <ClInclude Include="OperatorManager.h" />
-    <ClInclude Include="Stack.h" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
