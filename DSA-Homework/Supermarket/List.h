@@ -17,8 +17,9 @@ public:
 	T PopAt(size_t index);
 	T PeakFront() const;
 	T PeakBack() const;
-	T PeakAt(size_t index);
+	T PeakAt(size_t index) const;
 	void Clear();
+	bool IsEmpty() const;
 
 protected:
 	class Node {
@@ -37,7 +38,7 @@ protected:
 	size_t size;
 
 	void CopyFrom(const List<T>& l);
-	Node* GetNode(size_t index);
+	Node* GetNode(size_t index) const;
 };
 
 template <class T>
@@ -155,7 +156,7 @@ T List<T>::PopBack() {
 }
 
 template <class T>
-T List<T>::PeakAt(size_t index) {
+T List<T>::PeakAt(size_t index) const {
 	return GetNode(index)->data;
 }
 
@@ -183,10 +184,15 @@ void List<T>::PushAt(size_t index, const T& data) {
 }
 
 template <class T>
-typename List<T>::Node* List<T>::GetNode(size_t index) {
+typename List<T>::Node* List<T>::GetNode(size_t index) const {
 	Node* it = first;
 	while (index--) {
 		it = it->next;
 	}
 	return it;
+}
+
+template <class T>
+bool List<T>::IsEmpty() const {
+	return size == 0;
 }
