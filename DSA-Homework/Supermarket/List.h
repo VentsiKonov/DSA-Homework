@@ -37,6 +37,7 @@ protected:
 	size_t size;
 
 	void CopyFrom(const List<T>& l);
+	Node* GetNode(size_t index);
 };
 
 template <class T>
@@ -74,12 +75,12 @@ void List<T>::CopyFrom(const List<T>& l) {
 template <class T>
 void List<T>::Clear() {
 	Node* current;
-	while (size--) {
+	while (size > 0) {
 		current = first;
 		first = first->next;
+		--size;
 		delete current;
 	}
-	size = 0;
 	last = nullptr;
 }
 
@@ -146,30 +147,46 @@ T List<T>::PopFront() {
 template <class T>
 T List<T>::PopBack() {
 	T returnValue = PeakBack();
-	Node* it = first; 
-	while (it->next != last) {
-		it = it->next;
-	}
+	Node* it = GetNode(this->size - 2);
 	last = it;
+	delete last->next;
 	--size;
 	return returnValue;
 }
 
 template <class T>
 T List<T>::PeakAt(size_t index) {
-	Node* it = first;
-	while (index--) {
-		it = it->next;
-	}
-	return it->data;
+	return GetNode(index)->data;
 }
 
 template <class T>
 T List<T>::PopAt(size_t index) {
-
+	if (index >= size) throw "Index out of range!";
+	Node* prev = GetNode(index - 1);
+	Node* current = prev->next;
+	T returnValue = current->data;
+	prev->next = current->next;
+	delete current;
+	--size;
+	return returnValue;
 }
 
 template <class T>
-void List<T>::PushAt(size_t index) {
+void List<T>::PushAt(size_t index, const T& data) {
+	if (!size) return PushFront(data);
+	if (size == index) return PushBack(data);
+	if (size < index) throw "Invalid index: Size of list is less then the index!";
 
+	Node* prev = GetNode(index - 1);
+	prev->next = new Node(data, prev->next);
+	++size;
+}
+
+template <class T>
+typename List<T>::Node* List<T>::GetNode(size_t index) {
+	Node* it = first;
+	while (index--) {
+		it = it->next;
+	}
+	return it;
 }

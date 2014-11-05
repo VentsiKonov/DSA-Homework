@@ -4,12 +4,30 @@ using namespace std;
 int main() {
 	{
 		List<int> a;
-		a.PushFront(5);
-		a.PushBack(10);
-		std::cout << a.PeakFront() << " " << a.PeakBack();
-		List<int> b(a);
-		a.Clear();
-		std::cout << b.PeakAt(1) << " " << b.PopBack();
+		
+		for (size_t i = 0; i < 20; i++) {
+			a.PushBack(i);
+		}
+
+		List<int> b = a;
+
+		a.PushAt(3, 30);
+		a.PopFront();
+		a.PopBack();
+		a.PopAt(12);
+		size_t size = a.Size();
+
+		for (size_t i = 0; i < size; i++) {
+			cout << a.PeakAt(i) << " " ;
+		}
+		cout << endl;
+
+		size = b.Size();
+		for (size_t i = 0; i < size; i++) {
+			cout << b.PeakAt(i);
+		}
+
+
 	}
 	_CrtDumpMemoryLeaks();
 	return 0;
