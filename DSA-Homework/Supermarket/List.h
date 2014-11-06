@@ -13,6 +13,21 @@ protected:
 		Node(const Node& n);
 		void operator=(const Node& n);
 	};
+public:
+	class Iterator {
+	private:
+		Node* current;	
+
+	public:
+		Iterator(Node* first) : current(first){}
+		Iterator& operator=(const Iterator& other);
+		Iterator& operator++(int);
+		Iterator& operator++();
+		Iterator& operator+=(size_t n);
+		bool operator==(Iterator& other);
+		bool operator!=(Iterator& other);
+		T operator*() const;
+	};
 
 public:
 	List();
@@ -36,6 +51,8 @@ public:
 	bool IsEmpty() const;
 	size_t Size() const;
 
+	Iterator Begin() const;
+	Iterator End() const;
 
 protected:
 	Node* first;
@@ -201,3 +218,57 @@ template <class T>
 bool List<T>::IsEmpty() const {
 	return size == 0;
 }
+
+template <class T>
+typename List<T>::Iterator& List<T>::Iterator::operator++() {
+	if (current != NULL)
+		current = current->next;
+	
+	return *this;
+}
+
+template <class T>
+typename List<T>::Iterator& List<T>::Iterator::operator++(int) {
+	Iterator temp(current);
+	++(*this);
+	return temp;
+}
+
+template <class T>
+bool List<T>::Iterator::operator==(Iterator& other) {
+	return current == other.current;
+}
+
+template <class T>
+bool List<T>::Iterator::operator!=(Iterator& other) {
+	return !(other == (*this));
+}
+
+template <class T>
+typename List<T>::Iterator& List<T>::Iterator::operator+=(size_t n) {
+	while (n--)
+		++(*this);
+
+	return *this;
+}
+
+template <class T>
+T List<T>::Iterator::operator*() const{
+	return current->data;
+}
+
+template <class T>
+typename List<T>::Iterator& List<T>::Iterator::operator=(const Iterator& other) {
+	this->current = other.current;
+}
+
+template <class T>
+typename List<T>::Iterator List<T>::Begin() const{
+	return Iterator(first);
+}
+
+template <class T>
+typename List<T>::Iterator List<T>::End() const {
+	return Iterator(NULL);
+}
+

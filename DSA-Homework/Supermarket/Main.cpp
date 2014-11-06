@@ -1,29 +1,18 @@
 #include <iostream>
+#include <vector>
+
 #include "List.h"
-#include "Queue.h"
 
 using namespace std;
 int main() {
 	{
-		Queue<int> a;
+		List<int> a;
 		for (size_t i = 0; i < 10; i++) {
-			a.Push(i);
+			a.PushBack(i);
 		}
-
-		Queue<int> b(a);
-		a.Clear();
-		a = b;
-		size_t size = b.Size();
-		for (size_t i = 0; i < size; i++) {
-			cout << b.Pop();
+		for (List<int>::Iterator i = a.Begin(); i != a.End(); ++i) {
+			cout << *i;
 		}
-		a = a;
-		size = a.Size();
-		cout << "new a:" << endl;
-		for (size_t i = 0; i < size; i++) {
-			cout << a.Pop();
-		}
-
 	}
 	_CrtDumpMemoryLeaks();
 	return 0;
