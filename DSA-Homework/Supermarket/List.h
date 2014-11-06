@@ -2,25 +2,6 @@
 
 template <class T>
 class List {
-public:
-	List();
-	~List();
-	List<T>& operator=(const List<T>& l);
-	List(const List<T>& l);
-
-	size_t Size() const;
-	void PushFront(const T& data);
-	void PushBack(const T& data);
-	void PushAt(size_t index, const T& data);
-	T PopFront();
-	T PopBack();
-	T PopAt(size_t index);
-	T PeakFront() const;
-	T PeakBack() const;
-	T PeakAt(size_t index) const;
-	void Clear();
-	bool IsEmpty() const;
-
 protected:
 	class Node {
 	public:
@@ -32,7 +13,31 @@ protected:
 		Node(const Node& n);
 		void operator=(const Node& n);
 	};
-	
+
+public:
+	List();
+	~List();
+	List<T>& operator=(const List<T>& l);
+	List(const List<T>& l);
+
+	void PushFront(const T& data);
+	void PushBack(const T& data);
+	void PushAt(size_t index, const T& data);
+
+	T PopFront();
+	T PopBack();
+	T PopAt(size_t index);
+
+	T PeekFront() const;
+	T PeekBack() const;
+	T PeekAt(size_t index) const;
+
+	void Clear();
+	bool IsEmpty() const;
+	size_t Size() const;
+
+
+protected:
 	Node* first;
 	Node* last;
 	size_t size;
@@ -121,12 +126,12 @@ void List<T>::PushFront(const T& data) {
 }
 
 template <class T>
-T List<T>::PeakFront() const {
+T List<T>::PeekFront() const {
 	return first->data;
 }
 
 template <class T>
-T List<T>::PeakBack() const {
+T List<T>::PeekBack() const {
 	return last->data;
 }
 
@@ -137,7 +142,7 @@ size_t List<T>::Size() const {
 
 template <class T>
 T List<T>::PopFront() {
-	T returnValue = PeakFront();
+	T returnValue = PeekFront();
 	Node* current = first;
 	first = first->next;
 	--size;
@@ -147,7 +152,7 @@ T List<T>::PopFront() {
 
 template <class T>
 T List<T>::PopBack() {
-	T returnValue = PeakBack();
+	T returnValue = PeekBack();
 	Node* it = GetNode(this->size - 2);
 	last = it;
 	delete last->next;
@@ -156,7 +161,7 @@ T List<T>::PopBack() {
 }
 
 template <class T>
-T List<T>::PeakAt(size_t index) const {
+T List<T>::PeekAt(size_t index) const {
 	return GetNode(index)->data;
 }
 
