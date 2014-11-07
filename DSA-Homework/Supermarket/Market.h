@@ -1,9 +1,15 @@
 #pragma once
 
+struct Client {
+	int ID; // уникален номер на клиента в магазина
+	int numberOfGoods; // брой на покупките на клиента
+	bool creditCard; // истина ако плаща с крединта карта
+};
+
 struct ClientState {
 	int CashDeskPosition; // номер на каса
 	int QueuePosition; // позиция в опашката на касата
-	Client * client;
+	Client* client;
 };
 
 struct MarketState {
@@ -12,11 +18,6 @@ struct MarketState {
 	int numberOfClientsAtExpressCashDeck;
 };
 
-struct Client {
-	int ID; // уникален номер на клиента в магазина
-	int numberOfGoods; // брой на покупките на клиента
-	bool creditCard; // истина ако плаща с крединта карта
-};
 
 class Market {
 public:
