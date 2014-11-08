@@ -79,6 +79,7 @@
     <ClInclude Include="List.h" />
     <ClInclude Include="Market.h" />
     <ClInclude Include="Queue.h" />
+    <ClInclude Include="Structs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
