@@ -4,7 +4,7 @@
 #include "Queue.h"
 #include "Structs.h"
 
-#define CashDeck Queue<Client>
+#define CashDesk Queue<Client>
 
 class Market {
 public:
@@ -15,9 +15,9 @@ public:
 
 private:
 	const int N;
-	List<CashDeck> cashDecks;
-	CashDeck expressDeck;
+	List<CashDesk> cashDesks;
+	CashDesk expressDesk;
 
 	void Tick();
-	size_t getSmallestDeckNumber();
+	CashDesk& getSmallestDesk();
 };
