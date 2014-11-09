@@ -99,3 +99,7 @@ size_t Market::getSmallestDeckNumber() {
 	
 	return smallestDeckNumber;
 }
+
+void Market::Tick() {
+
+}

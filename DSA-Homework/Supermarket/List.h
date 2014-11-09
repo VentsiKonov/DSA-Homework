@@ -26,7 +26,7 @@ public:
 		Iterator& operator+=(size_t n);
 		bool operator==(Iterator& other);
 		bool operator!=(Iterator& other);
-		T operator*() const;
+		T& operator*() const;
 	};
 
 public:
@@ -43,9 +43,9 @@ public:
 	T PopBack();
 	T PopAt(size_t index);
 
-	T PeekFront() const;
-	T PeekBack() const;
-	T PeekAt(size_t index) const;
+	T& PeekFront() const;
+	T& PeekBack() const;
+	T& PeekAt(size_t index) const;
 
 	void Clear();
 	bool IsEmpty() const;
@@ -156,13 +156,18 @@ void List<T>::PushAt(size_t index, const T data) {
 }
 
 template <class T>
-T List<T>::PeekFront() const {
+T& List<T>::PeekFront() const {
 	return first->data;
 }
 
 template <class T>
-T List<T>::PeekBack() const {
+T& List<T>::PeekBack() const {
 	return last->data;
+}
+
+template <class T>
+T& List<T>::PeekAt(size_t index) const {
+	return GetNode(index)->data;
 }
 
 template <class T>
@@ -188,11 +193,6 @@ T List<T>::PopBack() {
 	delete last->next;
 	--size;
 	return returnValue;
-}
-
-template <class T>
-T List<T>::PeekAt(size_t index) const {
-	return GetNode(index)->data;
 }
 
 template <class T>
@@ -279,7 +279,7 @@ typename List<T>::Iterator& List<T>::Iterator::operator+=(size_t n) {
 }
 
 template <class T>
-T List<T>::Iterator::operator*() const{
+T& List<T>::Iterator::operator*() const{
 	return current->data;
 }
 
