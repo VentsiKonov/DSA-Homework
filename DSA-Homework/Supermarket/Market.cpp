@@ -30,7 +30,7 @@ MarketState Market::getMarketState() {
 }
 
 ClientState Market::getClientState(int ID) {
-	ClientState cs;
+	ClientState cs{ 0, 0, nullptr };
 	
 	size_t currentDeckClients = 0;
 	Client* currentClient;
@@ -52,5 +52,50 @@ ClientState Market::getClientState(int ID) {
 			}
 	}
 
+	if (cs.client == nullptr) { // Client cannot be found in the ordinary decks
+		currentDeckClients = expressDeck.Size();
+		for (size_t i = 0; i < currentDeckClients; i++) {
+			currentClient = &expressDeck.Pop();
+
+			if (currentClient->ID == ID) {
+				cs.CashDeskPosition = -1; // Express deck number??
+				cs.QueuePosition = i;
+				cs.client = currentClient;
+			}
+
+			expressDeck.Push(*currentClient);
+		}
+	}
+
 	return cs;
+}
+
+void Market::AddClient(Client* clients, int number) {
+
+	for (size_t i = 0; i < number; i++) {
+		if (clients[i].numberOfGoods > 0) {
+			if (clients[i].numberOfGoods <= 3 && expressDeck.Size() < 2 * N)
+				expressDeck.Push(clients[i]);
+			else
+				cashDecks.PeekAt(getSmallestDeckNumber()).Push(clients[i]);
+		}
+	}
+
+	Tick();
+}
+
+size_t Market::getSmallestDeckNumber() {
+	int currentSmallest = 0;
+	int smallestDeckNumber = 0;
+	int n = 0;
+	for (List<CashDeck>::Iterator i = cashDecks.Begin(); i != cashDecks.End(); ++i, ++n) {
+		if ((*i).Size() != 0) {
+			if (currentSmallest == 0 || currentSmallest > (*i).Size()) {
+				currentSmallest = (*i).Size();
+				smallestDeckNumber = n;
+			}
+		}
+	}
+	
+	return smallestDeckNumber;
 }

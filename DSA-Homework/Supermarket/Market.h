@@ -17,4 +17,7 @@ private:
 	const int N;
 	List<CashDeck> cashDecks;
 	CashDeck expressDeck;
+
+	void Tick();
+	size_t getSmallestDeckNumber();
 };
