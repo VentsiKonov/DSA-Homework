@@ -35,9 +35,9 @@ public:
 	List<T>& operator=(const List<T>& l);
 	List(const List<T>& l);
 
-	void PushFront(const T& data);
-	void PushBack(const T& data);
-	void PushAt(size_t index, const T& data);
+	void PushFront(const T data);
+	void PushBack(const T data);
+	void PushAt(size_t index, const T data);
 
 	T PopFront();
 	T PopBack();
@@ -78,7 +78,7 @@ List<T>::Node::Node(const T& data, Node* next) {
 
 template <class T>
 List<T>::List() {
-	first = last = NULL;
+	first = last = nullptr;
 	size = 0;
 }
 
@@ -129,7 +129,7 @@ List<T>& List<T>::operator=(const List<T>& l) {
 }
 
 template <class T>
-void List<T>::PushBack(const T& data) {
+void List<T>::PushBack(const T data) {
 	if (!last) 
 		return PushFront(data);
 
@@ -138,9 +138,20 @@ void List<T>::PushBack(const T& data) {
 }
 
 template <class T>
-void List<T>::PushFront(const T& data) {
+void List<T>::PushFront(const T data) {
 	first = new Node(data, first);
 	if (!last) last = first;
+	++size;
+}
+
+template <class T>
+void List<T>::PushAt(size_t index, const T data) {
+	if (!size) return PushFront(data);
+	if (size == index) return PushBack(data);
+	if (size < index) throw "Invalid index: Size of list is less then the index!";
+
+	Node* prev = GetNode(index - 1);
+	prev->next = new Node(data, prev->next);
 	++size;
 }
 
@@ -197,17 +208,6 @@ T List<T>::PopAt(size_t index) {
 }
 
 template <class T>
-void List<T>::PushAt(size_t index, const T& data) {
-	if (!size) return PushFront(data);
-	if (size == index) return PushBack(data);
-	if (size < index) throw "Invalid index: Size of list is less then the index!";
-
-	Node* prev = GetNode(index - 1);
-	prev->next = new Node(data, prev->next);
-	++size;
-}
-
-template <class T>
 typename List<T>::Node* List<T>::GetNode(size_t index) const {
 	Node* it = first;
 	while (index--) {
@@ -230,14 +230,14 @@ List<T> List<T>::CutFrom(size_t position) {
 	newList.first = GetNode(position);
 	newList.last = newList.first;
 
-	while (newList.last->next != NULL) {
+	while (newList.last->next != nullptr) {
 		newList.last = newList.last->next;
 		++newList.size;
 	}
 	++newList.size;
 	this->size = 0;
 	this->last = GetNode(position - 1);
-	this->last->next = NULL;
+	this->last->next = nullptr;
 	for (Iterator i = this->Begin(); i != this->End(); ++i) {
 		++this->size;
 	}
@@ -247,7 +247,7 @@ List<T> List<T>::CutFrom(size_t position) {
 
 template <class T>
 typename List<T>::Iterator& List<T>::Iterator::operator++() {
-	if (current != NULL)
+	if (current != nullptr)
 		current = current->next;
 	
 	return *this;
@@ -295,6 +295,6 @@ typename List<T>::Iterator List<T>::Begin() const{
 
 template <class T>
 typename List<T>::Iterator List<T>::End() const {
-	return Iterator(NULL);
+	return Iterator(nullptr);
 }
 
