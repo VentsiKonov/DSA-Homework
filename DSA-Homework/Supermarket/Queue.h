@@ -10,7 +10,7 @@ public:
 	
 	void Push(const T& data);
 	T Pop();
-	T Peek() const;
+	T& Peek() const;
 	size_t Size() const;
 	void Clear();
 	bool IsEmpty() const;
@@ -37,7 +37,7 @@ size_t Queue<T>::Size() const {
 }
 
 template <class T>
-T Queue<T>::Peek() const {
+T& Queue<T>::Peek() const {
 	return List<T>::PeekFront();
 }
 

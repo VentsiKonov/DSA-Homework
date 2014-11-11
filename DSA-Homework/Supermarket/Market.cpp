@@ -6,16 +6,16 @@ Market::Market(int NumberOfAllCashDecks) : N(NumberOfAllCashDecks){
 		throw "You cannot have less than 1 cash deck!";
 
 	// Init
-	locked = new bool[N];
-	for (int i = 0; i < NumberOfAllCashDecks; ++i) {
+	lockedForTicks = new int[N+1];
+	for (int i = 0; i < NumberOfAllCashDecks + 1; ++i) {
 		Queue<Client> j;
 		cashDesks.PushBack(j);
-		locked[i] = false;
+		lockedForTicks[i] = 0;
 	}
 }
 
 Market::~Market() {
-	delete locked;
+	delete[] lockedForTicks;
 }
 
 MarketState Market::getMarketState() {
@@ -129,8 +129,9 @@ void Market::rearrangeFrom(CashDesk& cashDesk, size_t skipFirst) {
 
 void Market::deskOperations() {
 	// Try to close a desk
-	for (List<CashDesk>::Iterator i = ++cashDesks.Begin(); i != cashDesks.End(); ++i) {
-		if ((*i).Size() < N / 10) { // Close desk
+	size_t n = 0;
+	for (List<CashDesk>::Iterator i = ++cashDesks.Begin(); i != cashDesks.End(); ++i, ++n) {
+		if (!lockedForTicks[n] && (*i).Size() < N / 10) { // Close desk
 			rearrangeFrom(*i, 0);
 			return;
 		}
@@ -180,5 +181,25 @@ void Market::deskOperations() {
 
 void Market::tick() {
 	deskOperations();
+	cashierOperations();
+}
 
+void Market::cashierOperations() {
+	size_t n = 0;
+	for (List<CashDesk>::Iterator i = cashDesks.Begin(); i != cashDesks.End(); ++i, ++n) {
+		if ((*i).Size() > 0) {
+			Client& client = (*i).Peek();
+			if (lockedForTicks[n] == 1) {
+				(*i).Pop();
+				--lockedForTicks[n];
+			}
+			else if(lockedForTicks[n] == 0){
+				lockedForTicks[n] = client.numberOfGoods;
+				lockedForTicks[n] += client.creditCard ? 2 : 1;
+			}
+			else {
+				--lockedForTicks[n];
+			}
+		}
+	}
 }

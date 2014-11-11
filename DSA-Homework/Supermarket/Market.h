@@ -17,10 +17,11 @@ public:
 private:
 	const int N;
 	List<CashDesk> cashDesks;
-	bool* locked;
+	int* lockedForTicks;
 
 	void tick();
 	void deskOperations();
+	void cashierOperations();
 	CashDesk& getSmallestOpenDesk(CashDesk* differentFrom = nullptr);
 	CashDesk* getFirstClosedDesk();
 	void addClient(const Client& client, CashDesk* notInDesk = nullptr);
