@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 
 #include "Market.h"
 
@@ -10,7 +9,7 @@ int main() {
 	{
 		Client* cl = new Client[10];
 		for (size_t i = 0; i < 10; i++) {
-			cl[i] = cli(i, i%7);
+			cl[i] = cli(i, 3);
 		}
 
 		Market a(5);

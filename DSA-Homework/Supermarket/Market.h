@@ -13,11 +13,17 @@ public:
 	MarketState getMarketState(); // връща състоянието на магазина
 	ClientState getClientState(int ID); // връща състоянието на клиента
 
+	~Market();
 private:
 	const int N;
 	List<CashDesk> cashDesks;
-	CashDesk expressDesk;
+	bool* locked;
 
-	void Tick();
-	CashDesk& getSmallestDesk();
+	void tick();
+	void deskOperations();
+	CashDesk& getSmallestOpenDesk(CashDesk* differentFrom = nullptr);
+	CashDesk* getFirstClosedDesk();
+	void addClient(const Client& client, CashDesk* notInDesk = nullptr);
+	void rearrangeFrom(CashDesk& desk, size_t number);
+
 };
