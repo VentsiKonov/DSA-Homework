@@ -1,5 +1,7 @@
 #include "Market.h"
 #include <math.h>
+#include <iostream>
+
 
 Market::Market(int NumberOfAllCashDecks) : N(NumberOfAllCashDecks){
 	if (NumberOfAllCashDecks < 1)
@@ -129,30 +131,33 @@ void Market::rearrangeFrom(CashDesk& cashDesk, size_t skipFirst) {
 
 void Market::deskOperations() {
 	// Try to close a desk
-	size_t n = 0;
+	size_t n = 1;
 	for (List<CashDesk>::Iterator i = ++cashDesks.Begin(); i != cashDesks.End(); ++i, ++n) {
-		if (!lockedForTicks[n] && (*i).Size() < N / 10) { // Close desk
+		if (lockedForTicks[n] == 0 && (*i).Size() < N / 10) { // Close desk
 			rearrangeFrom(*i, 0);
 			return;
 		}
 	}
 
 	// Try to equalize desk queues
-	for (List<CashDesk>::Iterator i = ++cashDesks.Begin(); i != cashDesks.End(); ) {
-		if ((*i).Size() == 0) { // Desk is closed
-			++i;
+	for (List<CashDesk>::Iterator i = ++cashDesks.Begin(); i != cashDesks.End(); ++i) {
+		if ((*i).Size() == 0) // Desk is closed
 			continue;
-		}
-		for (List<CashDesk>::Iterator j = ++i; j != cashDesks.End(); ++j) {
+
+		for (List<CashDesk>::Iterator j = ++List<CashDesk>::Iterator(i); j != cashDesks.End(); ++j) {
 			if ((*j).Size() == 0 ) // Desk is closed
 				continue;
 
 			if (abs((long)(*i).Size() - (long)(*j).Size()) > N / 8) {
 				// For each two queues -> compare sizes and split longer in half
-				if ((*i).Size() > (*j).Size())
+				if ((*i).Size() > (*j).Size()) {
 					rearrangeFrom(*i, (*i).Size() / 2);
-				else 
+					
+				}
+				else {
 					rearrangeFrom(*j, (*j).Size() / 2);
+
+				}
 
 				return;
 			}
@@ -180,22 +185,35 @@ void Market::deskOperations() {
 }
 
 void Market::tick() {
-	deskOperations();
+#define TEST 1
+
 	cashierOperations();
+	deskOperations();
+#if TEST
+	static int c = 0;
+	c += 1;
+	std::cout << "\tTick count: " << c << std::endl;
+	for (size_t i = 0; i < N + 1; i++) {
+		std::cout << "\t\tdeck " << i << " : lock(" << lockedForTicks[i] << "), size(" << cashDesks.PeekAt(i).Size() << ")" << std::endl;
+	}
+#endif
 }
 
 void Market::cashierOperations() {
+
 	size_t n = 0;
 	for (List<CashDesk>::Iterator i = cashDesks.Begin(); i != cashDesks.End(); ++i, ++n) {
 		if ((*i).Size() > 0) {
-			Client& client = (*i).Peek();
+			
 			if (lockedForTicks[n] == 1) {
 				(*i).Pop();
 				--lockedForTicks[n];
 			}
 			else if(lockedForTicks[n] == 0){
+				Client& client = (*i).Peek();
 				lockedForTicks[n] = client.numberOfGoods;
-				lockedForTicks[n] += client.creditCard ? 2 : 1;
+				lockedForTicks[n] += client.creditCard ? 1 : 2;
+				//--lockedForTicks[n];
 			}
 			else {
 				--lockedForTicks[n];

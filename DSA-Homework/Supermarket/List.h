@@ -51,8 +51,6 @@ public:
 	bool IsEmpty() const;
 	size_t Size() const;
 
-	List<T> CutFrom(size_t position);
-
 	Iterator Begin() const;
 	Iterator End() const;
 
@@ -219,30 +217,6 @@ typename List<T>::Node* List<T>::GetNode(size_t index) const {
 template <class T>
 bool List<T>::IsEmpty() const {
 	return size == 0;
-}
-
-template <class T>
-List<T> List<T>::CutFrom(size_t position) {
-	if (position >= size)
-		throw "No enough elements in the list!";
-
-	List<T> newList;
-	newList.first = GetNode(position);
-	newList.last = newList.first;
-
-	while (newList.last->next != nullptr) {
-		newList.last = newList.last->next;
-		++newList.size;
-	}
-	++newList.size;
-	this->size = 0;
-	this->last = GetNode(position - 1);
-	this->last->next = nullptr;
-	for (Iterator i = this->Begin(); i != this->End(); ++i) {
-		++this->size;
-	}
-
-	return newList;
 }
 
 template <class T>
