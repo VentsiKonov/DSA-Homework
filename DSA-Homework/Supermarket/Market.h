@@ -15,11 +15,12 @@ public:
 
 	~Market();
 private:
-		const bool Allow_Rearrange_To_Same_Desk = true;
-		const long Open_Desk_Bound = N;
-		const long Close_Desk_Bound = N / 10;
-		const long Rearrange_Clients_Bound = N / 8;
-	
+	// Init in constructor
+	const bool Allow_Rearrange_To_Same_Desk;
+	const long Open_Desk_Bound;
+	const long Close_Desk_Bound;
+	const long Rearrange_Clients_Bound;
+
 	const int N;
 	List<CashDesk> cashDesks;
 	int* lockedForTicks;

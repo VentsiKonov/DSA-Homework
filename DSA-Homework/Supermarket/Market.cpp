@@ -4,10 +4,18 @@
 
 #define DEBUG 0
 
-Market::Market(int NumberOfAllCashDecks) : N(NumberOfAllCashDecks){
+Market::Market(int NumberOfAllCashDecks) : 
+// Set constants values
+	N(NumberOfAllCashDecks),
+	Allow_Rearrange_To_Same_Desk(true),
+	Open_Desk_Bound(NumberOfAllCashDecks),
+	Close_Desk_Bound(NumberOfAllCashDecks / 10),
+	Rearrange_Clients_Bound(NumberOfAllCashDecks / 8)
+{
 	if (NumberOfAllCashDecks < 1)
 		throw "You cannot have less than 1 cash deck!";
 
+	
 	// Init
 	lockedForTicks = new int[N+1];
 	for (int i = 0; i < NumberOfAllCashDecks + 1; ++i) {
@@ -15,6 +23,7 @@ Market::Market(int NumberOfAllCashDecks) : N(NumberOfAllCashDecks){
 		cashDesks.PushBack(j);
 		lockedForTicks[i] = 0;
 	}
+	
 }
 
 Market::~Market() {
