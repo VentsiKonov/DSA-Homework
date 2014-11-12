@@ -27,4 +27,8 @@ private:
 	void addClient(const Client& client, CashDesk* notInDesk = nullptr);
 	void rearrangeFrom(CashDesk& desk, size_t number);
 
+	bool closeDesk();
+	bool openDesk();
+	bool normalizeQueues();
+
 };

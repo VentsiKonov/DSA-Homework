@@ -159,14 +159,15 @@ void test_creditCard() {
 }
 
 int main() {
-
 	test_expresCashDesk();
 	cout << endl;
-	//test_creditCard();
-	//cout << endl;
-	//test_addOneByOne();
-	//cout << endl;
-	//test_manyClientsInOneTick();
-	//cout << endl; 
-	//test_unloadMarket();
+
+	test_creditCard();
+	cout << endl;
+	test_addOneByOne();
+	cout << endl;
+	test_manyClientsInOneTick();
+	cout << endl; 
+	test_unloadMarket();
+
 }

@@ -129,48 +129,24 @@ void Market::rearrangeFrom(CashDesk& cashDesk, size_t skipFirst) {
 	
 }
 
-void Market::deskOperations() {
-	// Try to close a desk
+bool Market::closeDesk() {
 	size_t n = 1;
 	for (List<CashDesk>::Iterator i = ++cashDesks.Begin(); i != cashDesks.End(); ++i, ++n) {
 		if (lockedForTicks[n] == 0 && (*i).Size() < N / 10) { // Close desk
 			rearrangeFrom(*i, 0);
-			return;
+			return true;
 		}
 	}
+	return false;
+}
 
-	// Try to equalize desk queues
-	for (List<CashDesk>::Iterator i = ++cashDesks.Begin(); i != cashDesks.End(); ++i) {
-		if ((*i).Size() == 0) // Desk is closed
-			continue;
-
-		for (List<CashDesk>::Iterator j = ++List<CashDesk>::Iterator(i); j != cashDesks.End(); ++j) {
-			if ((*j).Size() == 0 ) // Desk is closed
-				continue;
-
-			if (abs((long)(*i).Size() - (long)(*j).Size()) > N / 8) {
-				// For each two queues -> compare sizes and split longer in half
-				if ((*i).Size() > (*j).Size()) {
-					rearrangeFrom(*i, (*i).Size() / 2);
-					
-				}
-				else {
-					rearrangeFrom(*j, (*j).Size() / 2);
-
-				}
-
-				return;
-			}
-		}
-	}
-
-	// Open a new desk
+bool Market::openDesk() {
 	for (List<CashDesk>::Iterator i = ++cashDesks.Begin(); i != cashDesks.End(); ++i) {
 		if ((*i).Size() > N) {
 			CashDesk* newDesk = getFirstClosedDesk();
 			if (!newDesk) // No closed desks left 
-				return;
-			size_t skipFirst = (*i).Size() / 2;
+				return false;
+			size_t skipFirst = (*i).Size() % 2 == 0 ? (*i).Size() / 2 : (*i).Size() / 2 + 1;
 			size_t count = skipFirst;
 			while (skipFirst--) {
 				(*i).Push((*i).Pop());
@@ -179,14 +155,48 @@ void Market::deskOperations() {
 				newDesk->Push((*i).Pop());
 			}
 
-			return;
+			return true;
 		}
 	}
+	return false;
+}
+
+bool Market::normalizeQueues() {
+	for (List<CashDesk>::Iterator i = ++cashDesks.Begin(); i != cashDesks.End(); ++i) {
+		if ((*i).Size() == 0) // Desk is closed
+			continue;
+
+		for (List<CashDesk>::Iterator j = ++List<CashDesk>::Iterator(i); j != cashDesks.End(); ++j) {
+			if ((*j).Size() == 0) // Desk is closed
+				continue;
+
+			if (abs((long)(*i).Size() - (long)(*j).Size()) > N / 8) {
+				// For each two queues -> compare sizes and split longer in half
+				if ((*i).Size() > (*j).Size()) {
+					rearrangeFrom(*i, (*i).Size() % 2 == 0 ? (*i).Size() / 2 : (*i).Size() / 2 + 1);
+
+				}
+				else {
+					rearrangeFrom(*j, (*j).Size() % 2 == 0 ? (*j).Size() / 2 : (*j).Size() / 2 + 1);
+
+				}
+
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+void Market::deskOperations() {
+
+	return (void)(closeDesk() || normalizeQueues() || openDesk());
+
 }
 
 void Market::tick() {
 #define TEST 1
-
 	cashierOperations();
 	deskOperations();
 #if TEST
@@ -213,7 +223,7 @@ void Market::cashierOperations() {
 				Client& client = (*i).Peek();
 				lockedForTicks[n] = client.numberOfGoods;
 				lockedForTicks[n] += client.creditCard ? 1 : 2;
-				//--lockedForTicks[n];
+				--lockedForTicks[n];
 			}
 			else {
 				--lockedForTicks[n];
