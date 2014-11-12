@@ -15,6 +15,11 @@ public:
 
 	~Market();
 private:
+		const bool Allow_Rearrange_To_Same_Desk = true;
+		const long Open_Desk_Bound = N;
+		const long Close_Desk_Bound = N / 10;
+		const long Rearrange_Clients_Bound = N / 8;
+	
 	const int N;
 	List<CashDesk> cashDesks;
 	int* lockedForTicks;
@@ -24,9 +29,8 @@ private:
 	void cashierOperations();
 	CashDesk& getSmallestOpenDesk(CashDesk* differentFrom = nullptr);
 	CashDesk* getFirstClosedDesk();
-	void addClient(const Client& client, CashDesk* notInDesk = nullptr);
+	void addClient(Client& client, CashDesk* notInDesk = nullptr);
 	void rearrangeFrom(CashDesk& desk, size_t number);
-
 	bool closeDesk();
 	bool openDesk();
 	bool normalizeQueues();

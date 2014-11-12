@@ -2,6 +2,7 @@
 #include <math.h>
 #include <iostream>
 
+#define DEBUG 0
 
 Market::Market(int NumberOfAllCashDecks) : N(NumberOfAllCashDecks){
 	if (NumberOfAllCashDecks < 1)
@@ -106,7 +107,10 @@ CashDesk* Market::getFirstClosedDesk() {
 	return nullptr; // No closed desks left
 }
 
-void Market::addClient(const Client& client, CashDesk* notInDesk) {
+void Market::addClient(Client& client, CashDesk* notInDesk) {
+	static size_t id = 1;
+	if (client.ID == -1)
+		client.ID = id++;
 	if (client.numberOfGoods > 0) {
 		if (client.numberOfGoods <= 3 && cashDesks.PeekFront().Size() < 2 * N) {
 			cashDesks.PeekFront().Push(client);
@@ -123,8 +127,9 @@ void Market::rearrangeFrom(CashDesk& cashDesk, size_t skipFirst) {
 		cashDesk.Push(cashDesk.Pop());
 	}
 	size_t queueSize = cashDesk.Size();
+	CashDesk* skipDesk = Allow_Rearrange_To_Same_Desk ? nullptr : &cashDesk;
 	for (size_t i = 0; i < queueSize - skipFirst; i++) {
-		addClient(cashDesk.Pop(), &cashDesk); // TODO: Assure the client is not in the same desk he is leaving
+		addClient(cashDesk.Pop(), skipDesk); // TODO: Assure the client is not in the same desk he is leaving
 	}
 	
 }
@@ -132,7 +137,7 @@ void Market::rearrangeFrom(CashDesk& cashDesk, size_t skipFirst) {
 bool Market::closeDesk() {
 	size_t n = 1;
 	for (List<CashDesk>::Iterator i = ++cashDesks.Begin(); i != cashDesks.End(); ++i, ++n) {
-		if (lockedForTicks[n] == 0 && (*i).Size() < N / 10) { // Close desk
+		if (lockedForTicks[n] == 0 && (*i).Size() < Close_Desk_Bound) { // Close desk
 			rearrangeFrom(*i, 0);
 			return true;
 		}
@@ -141,13 +146,16 @@ bool Market::closeDesk() {
 }
 
 bool Market::openDesk() {
+	long iSize = 0;
 	for (List<CashDesk>::Iterator i = ++cashDesks.Begin(); i != cashDesks.End(); ++i) {
-		if ((*i).Size() > N) {
+		iSize = (*i).Size();
+		if (iSize > Open_Desk_Bound) {
 			CashDesk* newDesk = getFirstClosedDesk();
 			if (!newDesk) // No closed desks left 
 				return false;
-			size_t skipFirst = (*i).Size() % 2 == 0 ? (*i).Size() / 2 : (*i).Size() / 2 + 1;
+			size_t skipFirst = iSize % 2 == 0 ? iSize / 2 : iSize / 2 + 1;
 			size_t count = skipFirst;
+
 			while (skipFirst--) {
 				(*i).Push((*i).Pop());
 			}
@@ -162,22 +170,25 @@ bool Market::openDesk() {
 }
 
 bool Market::normalizeQueues() {
+	long iSize = 0, jSize = 0;
 	for (List<CashDesk>::Iterator i = ++cashDesks.Begin(); i != cashDesks.End(); ++i) {
-		if ((*i).Size() == 0) // Desk is closed
+		iSize = (*i).Size();
+		if (iSize == 0) // Desk is closed
 			continue;
 
 		for (List<CashDesk>::Iterator j = ++List<CashDesk>::Iterator(i); j != cashDesks.End(); ++j) {
-			if ((*j).Size() == 0) // Desk is closed
+			jSize = (*j).Size();
+			if (jSize == 0) // Desk is closed
 				continue;
 
-			if (abs((long)(*i).Size() - (long)(*j).Size()) > N / 8) {
+			if (abs(iSize - jSize) > Rearrange_Clients_Bound) {
 				// For each two queues -> compare sizes and split longer in half
-				if ((*i).Size() > (*j).Size()) {
-					rearrangeFrom(*i, (*i).Size() % 2 == 0 ? (*i).Size() / 2 : (*i).Size() / 2 + 1);
+				if (iSize > jSize) {
+					rearrangeFrom(*i, iSize % 2 == 0 ? iSize / 2 : iSize / 2 + 1);
 
 				}
 				else {
-					rearrangeFrom(*j, (*j).Size() % 2 == 0 ? (*j).Size() / 2 : (*j).Size() / 2 + 1);
+					rearrangeFrom(*j, jSize % 2 == 0 ? jSize / 2 : jSize / 2 + 1);
 
 				}
 
@@ -196,10 +207,10 @@ void Market::deskOperations() {
 }
 
 void Market::tick() {
-#define TEST 1
 	cashierOperations();
 	deskOperations();
-#if TEST
+
+#if DEBUG
 	static int c = 0;
 	c += 1;
 	std::cout << "\tTick count: " << c << std::endl;
@@ -218,8 +229,7 @@ void Market::cashierOperations() {
 			if (lockedForTicks[n] == 1) {
 				(*i).Pop();
 				--lockedForTicks[n];
-			}
-			else if(lockedForTicks[n] == 0){
+			} else if (lockedForTicks[n] == 0) {
 				Client& client = (*i).Peek();
 				lockedForTicks[n] = client.numberOfGoods;
 				lockedForTicks[n] += client.creditCard ? 1 : 2;
@@ -228,6 +238,7 @@ void Market::cashierOperations() {
 			else {
 				--lockedForTicks[n];
 			}
+			
 		}
 	}
 }

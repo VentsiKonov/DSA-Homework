@@ -159,9 +159,9 @@ void test_creditCard() {
 }
 
 int main() {
+
 	test_expresCashDesk();
 	cout << endl;
-
 	test_creditCard();
 	cout << endl;
 	test_addOneByOne();
