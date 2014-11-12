@@ -20,10 +20,11 @@ private:
 	const long Open_Desk_Bound;
 	const long Close_Desk_Bound;
 	const long Rearrange_Clients_Bound;
-
+	
 	const int N;
 	List<CashDesk> cashDesks;
 	int* lockedForTicks;
+	size_t ids;
 
 	void tick();
 	void deskOperations();

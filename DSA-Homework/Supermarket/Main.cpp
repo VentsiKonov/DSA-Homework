@@ -16,19 +16,19 @@ void test_addOneByOne() {
 
 	if (state.numberOfCashDesk != 2) {
 		cout << "we expected 2 open cash desk but we found : " << state.numberOfCashDesk << endl;
-		//return;
+		return;
 	}
 	if (state.numberOfClientsAtCashDecsk[0] != 5) {
 		cout << "we expected 5 clients on cash desk [0] but found :" << state.numberOfClientsAtCashDecsk[0] << endl;
-		//return;
+		return;
 	}
 	if (state.numberOfClientsAtCashDecsk[1] != 5) {
 		cout << "we expected 5 clients on cash desk [1] but found :" << state.numberOfClientsAtCashDecsk[1] << endl;
-		//return;
+		return;
 	}
 	if (state.numberOfClientsAtExpressCashDeck != 0) {
 		cout << "we expected 0 client on expres cash desk but found :" << state.numberOfClientsAtExpressCashDeck << endl;
-		//return;
+		return;
 	}
 	cout << "test addOneByOne is OK" << endl;
 }
@@ -115,15 +115,15 @@ void test_unloadMarket() {
 
 	if (state.numberOfCashDesk != 1) {
 		cout << "we expected 1 open cash desk but we found : " << state.numberOfCashDesk << endl;
-		//return;
+		return;
 	}
 	if (state.numberOfClientsAtCashDecsk[0] != 1) {
 		cout << "we expected 1 client on cash desk [0] but found :" << state.numberOfClientsAtCashDecsk[0] << endl;
-		//return;
+		return;
 	}
 	if (state.numberOfClientsAtExpressCashDeck != 0) {
 		cout << "we expected 0 client on expres cash desk but found :" << state.numberOfClientsAtExpressCashDeck << endl;
-		//return;
+		return;
 	}
 	cout << "test unloadMarket is OK" << endl;
 }
@@ -149,11 +149,11 @@ void test_creditCard() {
 
 	if (state.numberOfClientsAtCashDecsk[0] != 6) {
 		cout << "we expected 6 client on cash desk [0] but found :" << state.numberOfClientsAtCashDecsk[0] << endl;
-		//return;
+		return;
 	}
 	if (state.numberOfClientsAtExpressCashDeck != 0) {
 		cout << "we expected 0 client on expres cash desk but found :" << state.numberOfClientsAtExpressCashDeck << endl;
-		//return;
+		return;
 	}
 	cout << "test creditCard is OK" << endl;
 }

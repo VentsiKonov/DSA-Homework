@@ -18,11 +18,13 @@ Market::Market(int NumberOfAllCashDecks) :
 	
 	// Init
 	lockedForTicks = new int[N+1];
-	for (int i = 0; i < NumberOfAllCashDecks + 1; ++i) {
+	for (int i = 0; i < N + 1; ++i) {
 		Queue<Client> j;
 		cashDesks.PushBack(j);
 		lockedForTicks[i] = 0;
 	}
+
+	ids = 0;
 	
 }
 
@@ -35,11 +37,12 @@ MarketState Market::getMarketState() {
 	ms.numberOfCashDesk = 0;
 	ms.numberOfClientsAtCashDecsk = new int[N]; // The caller of this method should delete this
 	ms.numberOfClientsAtExpressCashDeck = cashDesks.PeekFront().Size();
+
 	int n = 0;
 	for (List<CashDesk>::Iterator it = ++cashDesks.Begin(); it != cashDesks.End(); ++it, ++n) {
 		ms.numberOfClientsAtCashDecsk[n] = (*it).Size();
 		
-		if (ms.numberOfClientsAtCashDecsk[n] != 0)
+		if (ms.numberOfClientsAtCashDecsk[n] > 0)
 			++ms.numberOfCashDesk;
 
 	}
@@ -50,12 +53,10 @@ MarketState Market::getMarketState() {
 
 ClientState Market::getClientState(int ID) {
 
-	// If expressDesk is set to be 0 in cashDesks, rework this
-
 	ClientState cs{ 0, 0, nullptr };
 	
 	size_t currentDeskClients = 0;
-	Client* currentClient;
+	Client* currentClient = nullptr;
 	int n = 0;
 	for (List<CashDesk>::Iterator it = cashDesks.Begin(); it != cashDesks.End(); ++it, ++n) {
 		currentDeskClients = (*it).Size();
@@ -117,9 +118,9 @@ CashDesk* Market::getFirstClosedDesk() {
 }
 
 void Market::addClient(Client& client, CashDesk* notInDesk) {
-	static size_t id = 1;
-	if (client.ID == -1)
-		client.ID = id++;
+	if (client.ID < 0)
+		client.ID = ids++;
+
 	if (client.numberOfGoods > 0) {
 		if (client.numberOfGoods <= 3 && cashDesks.PeekFront().Size() < 2 * N) {
 			cashDesks.PeekFront().Push(client);
