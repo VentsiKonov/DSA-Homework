@@ -36,17 +36,17 @@ MarketState Market::getMarketState() {
 	MarketState ms;
 	ms.numberOfCashDesk = 0;
 	ms.numberOfClientsAtCashDecsk = new int[N]; // The caller of this method should delete this
-	ms.numberOfClientsAtExpressCashDeck = cashDesks.PeekFront().Size();
+	ms.numberOfClientsAtExpressCashDeck = cashDesks.Front().Size();
 
 	int n = 0;
 	for (List<CashDesk>::Iterator it = ++cashDesks.Begin(); it != cashDesks.End(); ++it, ++n) {
-		ms.numberOfClientsAtCashDecsk[n] = (*it).Size();
+		ms.numberOfClientsAtCashDecsk[n] = (int)(*it).Size();
 		
 		if (ms.numberOfClientsAtCashDecsk[n] > 0)
 			++ms.numberOfCashDesk;
 
 	}
-
+	
 	return ms;
 
 }
@@ -122,8 +122,8 @@ void Market::addClient(Client& client, CashDesk* notInDesk) {
 		client.ID = ids++;
 
 	if (client.numberOfGoods > 0) {
-		if (client.numberOfGoods <= 3 && cashDesks.PeekFront().Size() < 2 * N) {
-			cashDesks.PeekFront().Push(client);
+		if (client.numberOfGoods <= 3 && cashDesks.Front().Size() < 2 * N) {
+			cashDesks.Front().Push(client);
 		}
 		else {
 			getSmallestOpenDesk(notInDesk).Push(client);

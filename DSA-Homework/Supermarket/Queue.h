@@ -38,7 +38,7 @@ size_t Queue<T>::Size() const {
 
 template <class T>
 T& Queue<T>::Peek() const {
-	return List<T>::PeekFront();
+	return List<T>::Front();
 }
 
 template <class T>

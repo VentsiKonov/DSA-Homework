@@ -43,9 +43,9 @@ public:
 	T PopBack();
 	T PopAt(size_t index);
 
-	T& PeekFront() const;
-	T& PeekBack() const;
-	T& PeekAt(size_t index) const;
+	T& Front() const;
+	T& Back() const;
+	T& ElementAt(size_t index) const;
 
 	void Clear();
 	bool IsEmpty() const;
@@ -154,17 +154,17 @@ void List<T>::PushAt(size_t index, const T data) {
 }
 
 template <class T>
-T& List<T>::PeekFront() const {
+T& List<T>::Front() const {
 	return first->data;
 }
 
 template <class T>
-T& List<T>::PeekBack() const {
+T& List<T>::Back() const {
 	return last->data;
 }
 
 template <class T>
-T& List<T>::PeekAt(size_t index) const {
+T& List<T>::ElementAt(size_t index) const {
 	return GetNode(index)->data;
 }
 
@@ -175,7 +175,7 @@ size_t List<T>::Size() const {
 
 template <class T>
 T List<T>::PopFront() {
-	T returnValue = PeekFront();
+	T returnValue = Front();
 	Node* current = first;
 	first = first->next;
 	--size;
