@@ -5,7 +5,7 @@ Market::Market(int NumberOfAllCashDecks) {
 		throw "You cannot have less than 1 cash deck!";
 
 	N = (NumberOfAllCashDecks);
-	Allow_Rearrange_To_Same_Desk = (true);
+	Allow_Rearrange_To_Same_Desk = (false); 
 	Open_Desk_Bound = (N);
 	Close_Desk_Bound = (N / 10);
 	Rearrange_Clients_Bound = (N / 8);
@@ -252,13 +252,16 @@ bool Market::normalizeQueues() {
 }
 
 void Market::deskOperations() {
-
+	// 1. Close Desk
+	// 2. Normalize Queues
+	// 3. Open new Desk
+	//
+	// In order 1->3, first to happen ignores the rest
+	
 	return (void)(closeDesk() || normalizeQueues() || openDesk());
-
 }
 
 void Market::tick() {
-
 	cashierOperations();
 	deskOperations();
 }

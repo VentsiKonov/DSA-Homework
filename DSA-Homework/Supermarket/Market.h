@@ -17,8 +17,8 @@ public:
 	Market& operator=(const Market& m);
 	~Market();
 private:
-	// Init in constructor
-	bool Allow_Rearrange_To_Same_Desk;
+	// Constants
+	bool Allow_Rearrange_To_Same_Desk; // Default: false
 	long Open_Desk_Bound;
 	long Close_Desk_Bound;
 	long Rearrange_Clients_Bound;
