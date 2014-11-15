@@ -13,15 +13,17 @@ public:
 	MarketState getMarketState(); // връща състоянието на магазина
 	ClientState getClientState(int ID); // връща състоянието на клиента
 
+	Market(const Market& m);
+	Market& operator=(const Market& m);
 	~Market();
 private:
 	// Init in constructor
-	const bool Allow_Rearrange_To_Same_Desk;
-	const long Open_Desk_Bound;
-	const long Close_Desk_Bound;
-	const long Rearrange_Clients_Bound;
+	bool Allow_Rearrange_To_Same_Desk;
+	long Open_Desk_Bound;
+	long Close_Desk_Bound;
+	long Rearrange_Clients_Bound;
 	
-	const int N;
+	int N;
 	List<CashDesk> cashDesks;
 	int* lockedForTicks;
 	size_t ids;
@@ -37,4 +39,5 @@ private:
 	bool openDesk();
 	bool normalizeQueues();
 
+	void copyDataFrom(const Market& m);
 };

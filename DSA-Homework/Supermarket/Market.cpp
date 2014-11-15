@@ -1,16 +1,14 @@
 #include "Market.h"
 
-Market::Market(int NumberOfAllCashDecks) : 
-// Set constants values
-	N(NumberOfAllCashDecks),
-	Allow_Rearrange_To_Same_Desk(true),
-	Open_Desk_Bound(NumberOfAllCashDecks),
-	Close_Desk_Bound(NumberOfAllCashDecks / 10),
-	Rearrange_Clients_Bound(NumberOfAllCashDecks / 8)
-{
+Market::Market(int NumberOfAllCashDecks) {
 	if (NumberOfAllCashDecks < 1)
 		throw "You cannot have less than 1 cash deck!";
 
+	N = (NumberOfAllCashDecks);
+	Allow_Rearrange_To_Same_Desk = (true);
+	Open_Desk_Bound = (N);
+	Close_Desk_Bound = (N / 10);
+	Rearrange_Clients_Bound = (N / 8);
 	
 	// Init
 	lockedForTicks = new int[N+1];
@@ -26,6 +24,38 @@ Market::Market(int NumberOfAllCashDecks) :
 
 Market::~Market() {
 	delete[] lockedForTicks;
+}
+
+Market::Market(const Market& m)
+{
+	copyDataFrom(m);
+}
+
+Market& Market::operator=(const Market& m) {
+	if (this != &m) {
+		delete[] lockedForTicks;
+		copyDataFrom(m);
+	}
+
+	return *this;
+}
+
+void Market::copyDataFrom(const Market& m) {
+	if (this != &m) {
+		this->N = m.N;
+		this->Allow_Rearrange_To_Same_Desk = m.Allow_Rearrange_To_Same_Desk;
+		this->Open_Desk_Bound = m.Open_Desk_Bound;
+		this->Close_Desk_Bound = m.Close_Desk_Bound;
+		this->Rearrange_Clients_Bound = m.Rearrange_Clients_Bound;
+		this->ids = m.ids;
+
+		this->cashDesks = List<CashDesk>(m.cashDesks);
+		size_t size = cashDesks.Size();
+		this->lockedForTicks = new int[size];
+		for (size_t i = 0; i < size; i++) {
+			this->lockedForTicks[i] = m.lockedForTicks[i];
+		}
+	}
 }
 
 MarketState Market::getMarketState() {
