@@ -4,7 +4,7 @@
 using namespace std;
 
 void test_addOneByOne() {
-	cout << "Start test addOneByOne" << endl;
+	//cout << "Start test addOneByOne" << endl;
 	Market m(2);
 	Client c{ -1, 40, 0 };
 
@@ -30,12 +30,12 @@ void test_addOneByOne() {
 		cout << "we expected 0 client on expres cash desk but found :" << state.numberOfClientsAtExpressCashDeck << endl;
 		return;
 	}
-	cout << "test addOneByOne is OK" << endl;
+	//cout << "test addOneByOne is OK" << endl;
 }
 
 void test_expresCashDesk() {
 
-	cout << "Start test expresCashDesk" << endl;
+	//cout << "Start test expresCashDesk" << endl;
 	Market m(1);
 	Client poor{ -1, 2, 0 }, rich{ -1, 10, 0 };
 
@@ -54,11 +54,11 @@ void test_expresCashDesk() {
 		cout << "we expected 2 client on expres cash desk but found :" << state.numberOfClientsAtExpressCashDeck << endl;
 		return;
 	}
-	cout << "test expresCashDesk is OK" << endl;
+	//cout << "test expresCashDesk is OK" << endl;
 }
 
 void test_manyClientsInOneTick() {
-	cout << "Start test manyClientsInOneTick" << endl;
+	//cout << "Start test manyClientsInOneTick" << endl;
 	Market m(4);
 	Client crowd[10];
 
@@ -89,11 +89,11 @@ void test_manyClientsInOneTick() {
 		return;
 	}
 
-	cout << "test manyClientsInOneTick is OK" << endl;
+	//cout << "test manyClientsInOneTick is OK" << endl;
 }
 
 void test_unloadMarket() {
-	cout << "Start test unloadMarket" << endl;
+	//cout << "Start test unloadMarket" << endl;
 	Market m(4);
 	Client crowd[10];
 
@@ -125,11 +125,11 @@ void test_unloadMarket() {
 		cout << "we expected 0 client on expres cash desk but found :" << state.numberOfClientsAtExpressCashDeck << endl;
 		return;
 	}
-	cout << "test unloadMarket is OK" << endl;
+	//cout << "test unloadMarket is OK" << endl;
 }
 
 void test_creditCard() {
-	cout << "Start test creditCard" << endl;
+	//cout << "Start test creditCard" << endl;
 	Market m(1);
 	Client crowd[10];
 
@@ -147,27 +147,28 @@ void test_creditCard() {
 
 	MarketState state = m.getMarketState();
 
-	if (state.numberOfClientsAtCashDecsk[0] != 6) {
-		cout << "we expected 6 client on cash desk [0] but found :" << state.numberOfClientsAtCashDecsk[0] << endl;
+	if (state.numberOfClientsAtCashDecsk[0] != 5) {
+		cout << "we expected 5 client on cash desk [0] but found :" << state.numberOfClientsAtCashDecsk[0] << endl;
 		return;
 	}
 	if (state.numberOfClientsAtExpressCashDeck != 0) {
 		cout << "we expected 0 client on expres cash desk but found :" << state.numberOfClientsAtExpressCashDeck << endl;
 		return;
 	}
-	cout << "test creditCard is OK" << endl;
+	//cout << "test creditCard is OK" << endl;
 }
 
 int main() {
 
-	test_expresCashDesk();
-	cout << endl;
-	test_creditCard();
-	cout << endl;
 	test_addOneByOne();
-	cout << endl;
+	//cout << endl;
+	test_expresCashDesk();
+	//cout << endl;
 	test_manyClientsInOneTick();
-	cout << endl; 
+	//cout << endl; 
 	test_unloadMarket();
+	//cout << endl;
+	test_creditCard();
+	//cout << endl;
 
 }

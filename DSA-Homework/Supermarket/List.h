@@ -21,7 +21,7 @@ public:
 	public:
 		Iterator(Node* first) : current(first){}
 		Iterator& operator=(const Iterator& other);
-		Iterator& operator++(int);
+		Iterator operator++(int);
 		Iterator& operator++();
 		Iterator& operator+=(size_t n);
 		bool operator==(Iterator& other);
@@ -228,7 +228,7 @@ typename List<T>::Iterator& List<T>::Iterator::operator++() {
 }
 
 template <class T>
-typename List<T>::Iterator& List<T>::Iterator::operator++(int) {
+typename List<T>::Iterator List<T>::Iterator::operator++(int) {
 	Iterator temp(current);
 	++(*this);
 	return temp;
@@ -236,12 +236,12 @@ typename List<T>::Iterator& List<T>::Iterator::operator++(int) {
 
 template <class T>
 bool List<T>::Iterator::operator==(Iterator& other) {
-	return current == other.current;
+	return !((*this) != other);
 }
 
 template <class T>
 bool List<T>::Iterator::operator!=(Iterator& other) {
-	return !(other == (*this));
+	return current != other.current;
 }
 
 template <class T>
@@ -260,6 +260,7 @@ T& List<T>::Iterator::operator*() const{
 template <class T>
 typename List<T>::Iterator& List<T>::Iterator::operator=(const Iterator& other) {
 	this->current = other.current;
+	return *this;
 }
 
 template <class T>
