@@ -179,16 +179,22 @@ T List<T>::PopFront() {
 	Node* current = first;
 	first = first->next;
 	--size;
+	if (size == 0)
+		last = first = nullptr;
 	delete current;
 	return returnValue;
 }
 
 template <class T>
 T List<T>::PopBack() {
+	if (size == 1) 
+		return PopFront();
+	
 	T returnValue = PeekBack();
 	Node* it = GetNode(this->size - 2);
 	last = it;
 	delete last->next;
+	last->next = nullptr;
 	--size;
 	return returnValue;
 }

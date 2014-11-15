@@ -20,7 +20,7 @@ Market::Market(int NumberOfAllCashDecks) :
 		lockedForTicks[i] = 0;
 	}
 
-	ids = 0;
+	ids = 1;
 	
 }
 
@@ -66,7 +66,7 @@ ClientState Market::getClientState(int ID) {
 				if (currentClient->ID == ID) {
 					cs.CashDeskPosition = n;
 					cs.QueuePosition = pos;
-					cs.client = currentClient;
+					cs.client = new Client(*currentClient); //currentClient;
 				}
 
 				(*it).Push(*currentClient);
@@ -121,7 +121,7 @@ CashDesk* Market::getFirstClosedDesk() {
 }
 
 void Market::addClient(Client& client, CashDesk* notInDesk) {
-	if (client.ID < 0)
+	if (client.ID < 1)
 		client.ID = ids++;
 
 	if (client.numberOfGoods > 0) {

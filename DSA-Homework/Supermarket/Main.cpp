@@ -30,7 +30,8 @@ void test_addOneByOne() {
 		cout << "we expected 0 client on expres cash desk but found :" << state.numberOfClientsAtExpressCashDeck << endl;
 		return;
 	}
-	//cout << "test addOneByOne is OK" << endl;
+	cout << "test addOneByOne is OK" << endl;
+	delete [] state.numberOfClientsAtCashDecsk;
 }
 
 void test_expresCashDesk() {
@@ -54,7 +55,8 @@ void test_expresCashDesk() {
 		cout << "we expected 2 client on expres cash desk but found :" << state.numberOfClientsAtExpressCashDeck << endl;
 		return;
 	}
-	//cout << "test expresCashDesk is OK" << endl;
+	cout << "test expresCashDesk is OK" << endl;
+	delete [] state.numberOfClientsAtCashDecsk;
 }
 
 void test_manyClientsInOneTick() {
@@ -88,8 +90,8 @@ void test_manyClientsInOneTick() {
 		cout << "we expected 0 client on expres cash desk but found :" << state.numberOfClientsAtExpressCashDeck << endl;
 		return;
 	}
-
-	//cout << "test manyClientsInOneTick is OK" << endl;
+	delete [] state.numberOfClientsAtCashDecsk;
+	cout << "test manyClientsInOneTick is OK" << endl;
 }
 
 void test_unloadMarket() {
@@ -125,7 +127,8 @@ void test_unloadMarket() {
 		cout << "we expected 0 client on expres cash desk but found :" << state.numberOfClientsAtExpressCashDeck << endl;
 		return;
 	}
-	//cout << "test unloadMarket is OK" << endl;
+	delete [] state.numberOfClientsAtCashDecsk;
+	cout << "test unloadMarket is OK" << endl;
 }
 
 void test_creditCard() {
@@ -155,42 +158,61 @@ void test_creditCard() {
 		cout << "we expected 0 client on expres cash desk but found :" << state.numberOfClientsAtExpressCashDeck << endl;
 		return;
 	}
-	//cout << "test creditCard is OK" << endl;
+	delete [] state.numberOfClientsAtCashDecsk;
+	cout << "test creditCard is OK" << endl;
 }
 
 void test_ID() {
+	//cout << "Start test ID" << endl;
 	Market m(1);
 	Client cls[5];
 	for (size_t i = 0; i < 5; i++) {
-		cls[i].creditCard = i % 2;
+		cls[i].creditCard = (i % 2 == 0);
 		cls[i].ID = -1;
-		cls[i].numberOfGoods = i;
+		cls[i].numberOfGoods = i + 1;
 	}
 
 	m.AddClient(cls, 5);
 	m.AddClient(nullptr, 0);
 	m.AddClient(nullptr, 0);
 
-	ClientState state = m.getClientState(cls[2].ID);
-	cout << "ID: " << state.client->ID << endl;
-	cout << "Goods: " << state.client->numberOfGoods << endl;
-	cout << "CreditCard: " << state.client->creditCard << endl;
-	cout << "\tCashDesk: " << state.CashDeskPosition << endl;
-	cout << "\tPosition: " << state.QueuePosition << endl;
+	ClientState state = m.getClientState(cls[3].ID);
+	int goods = state.client->numberOfGoods;
+	bool card = (state.client)->creditCard;
+	int desk = state.CashDeskPosition;
+	int position = state.QueuePosition;
+	delete state.client;
+	if (goods != 4) {
+		cout << "Expected 4 client goods but found : " << goods << endl;
+		return;
+	}
+	if (card != false) {
+		cout << "Expected credit card false but found : " << (card ? "true" : "false") << endl;
+		return;
+	}
+	if (desk != 1) {
+		cout << "Expected cash desk 1 but found : " << desk << endl;
+		return;
+	}
+	if (position != 1) {
+		cout << "Expected position 1 but found : " << position << endl;
+		return;
+	}
+	cout << "test ID is OK" << endl;
+
 }
 
 int main() {
-
 	test_addOneByOne();
-	//cout << endl;
+	cout << endl;
 	test_expresCashDesk();
-	//cout << endl;
+	cout << endl;
 	test_manyClientsInOneTick();
-	//cout << endl; 
+	cout << endl; 
 	test_unloadMarket();
-	//cout << endl;
+	cout << endl;
 	test_creditCard();
-	//cout << endl;
+	cout << endl;
 	test_ID();
-
+	cout << endl;
 }
