@@ -158,6 +158,27 @@ void test_creditCard() {
 	//cout << "test creditCard is OK" << endl;
 }
 
+void test_ID() {
+	Market m(1);
+	Client cls[5];
+	for (size_t i = 0; i < 5; i++) {
+		cls[i].creditCard = i % 2;
+		cls[i].ID = -1;
+		cls[i].numberOfGoods = i;
+	}
+
+	m.AddClient(cls, 5);
+	m.AddClient(nullptr, 0);
+	m.AddClient(nullptr, 0);
+
+	ClientState state = m.getClientState(cls[2].ID);
+	cout << "ID: " << state.client->ID << endl;
+	cout << "Goods: " << state.client->numberOfGoods << endl;
+	cout << "CreditCard: " << state.client->creditCard << endl;
+	cout << "\tCashDesk: " << state.CashDeskPosition << endl;
+	cout << "\tPosition: " << state.QueuePosition << endl;
+}
+
 int main() {
 
 	test_addOneByOne();
@@ -170,5 +191,6 @@ int main() {
 	//cout << endl;
 	test_creditCard();
 	//cout << endl;
+	test_ID();
 
 }

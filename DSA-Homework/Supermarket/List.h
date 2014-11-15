@@ -128,7 +128,7 @@ List<T>& List<T>::operator=(const List<T>& l) {
 
 template <class T>
 void List<T>::PushBack(const T data) {
-	if (!last) 
+	if (!first) 
 		return PushFront(data);
 
 	last = last->next = new Node(data, nullptr);
