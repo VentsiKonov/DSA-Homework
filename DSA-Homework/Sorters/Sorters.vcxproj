@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="HeapSort.hpp" />
     <ClInclude Include="InsertionSort.hpp" />
     <ClInclude Include="QuickSort.hpp" />
     <ClInclude Include="Sorter.h" />

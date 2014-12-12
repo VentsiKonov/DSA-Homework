@@ -1,5 +1,7 @@
 #include "InsertionSort.hpp"
 #include "QuickSort.hpp"
+#include "HeapSort.hpp"
+
 #include <iostream>
 
 bool isSorted(int* data, size_t count) {
@@ -14,8 +16,10 @@ int main() {
 
 	QuickSort<int> quick;
 	InsertionSort<int> insertion;
+	HeapSort<int> heap;
+
 	int* data;
-	size_t count = 1620400;
+	size_t count = 10000000;
 	data = new int[count];
 	for (size_t i = 0; i < count; i++) {
 		data[i] = rand() % 5000;
@@ -30,7 +34,7 @@ int main() {
 
 	// head
 
-	quick.sort(data, count);
+	heap.sort(data, count);
 
 	// foot
 	bool sorted = isSorted(data, count);
@@ -41,7 +45,7 @@ int main() {
 		}
 		std::cout << std::endl;
 	}
-	std::cout << quick.getSortTime() << " ticks." << std::endl;
+	std::cout << heap.getSortTime() << " ticks." << std::endl;
 	return 0;
 }
 
