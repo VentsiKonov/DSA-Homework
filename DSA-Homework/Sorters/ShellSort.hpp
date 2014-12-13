@@ -1,14 +1,16 @@
+#pragma once
 #include "Sorter.h"
+#include <ctime>
 
 template <class T>
-class ShellSort : Sorter < T > {
+class ShellSort : public Sorter < T > {
 public:
 	virtual void sort(T* data, size_t count);
 	virtual unsigned long long getSortTime() const;
 private:
 	void swap(T* data, size_t lhs, size_t rhs);
 
-	time_t time = 0;
+	clock_t time = 0;
 };
 
 template <class T>

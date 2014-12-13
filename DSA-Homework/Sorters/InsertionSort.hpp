@@ -1,8 +1,9 @@
 #pragma once
 #include "Sorter.h"
 #include <ctime>
+
 template<typename T>
-class InsertionSort : Sorter<T> {
+class InsertionSort : public Sorter<T> {
 public:
 
 	virtual void sort(T * data, size_t count);
@@ -10,7 +11,7 @@ public:
 	virtual unsigned long long getSortTime() const;
 
 private:
-	clock_t time;
+	clock_t time = 0;
 };
 
 template <class T>

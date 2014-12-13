@@ -85,6 +85,7 @@
     <ClInclude Include="ShellSort.hpp" />
     <ClInclude Include="Sorter.h" />
     <ClInclude Include="SortTester.h" />
+    <ClInclude Include="SortTesterClass.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />

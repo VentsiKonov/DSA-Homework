@@ -1,7 +1,9 @@
+#pragma once
 #include "Sorter.h"
+#include <ctime>
 
 template <class T>
-class MergeSort : Sorter < T > {
+class MergeSort : public Sorter < T > {
 public:
 	virtual void sort(T* data, size_t count);
 	virtual unsigned long long getSortTime() const;
@@ -13,7 +15,7 @@ private:
 	}
 
 	T* workArray;
-	time_t time = 0;
+	clock_t time = 0;
 };
 
 template <class T>

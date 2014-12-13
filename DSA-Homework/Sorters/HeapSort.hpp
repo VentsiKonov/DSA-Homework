@@ -1,7 +1,9 @@
+#pragma once
 #include "Sorter.h"
+#include <ctime>
 
 template <class T>
-class HeapSort : Sorter<T> {
+class HeapSort : public Sorter<T> {
 public:
 	virtual void sort(T* data, size_t count);
 	virtual unsigned long long getSortTime() const;
@@ -14,7 +16,7 @@ private:
 	void swap(T* data, size_t leftIndex, size_t rightIndex);
 
 	size_t heapSize = 0;
-	time_t time = 0;
+	clock_t time = 0;
 	size_t swaps = 0;
 };
 
@@ -53,24 +55,25 @@ void HeapSort<T>::siftDown(T* data, size_t index) {
 	size_t leftChildIndex = 2 * index + 1;
 	size_t rightChildIndex = 2 * index + 2;
 	size_t biggerChildIndex = leftChildIndex;
-
+	size_t originalIndex = index;
 	while (biggerChildIndex < heapSize) {
-		leftChildIndex = 2 * index + 1;
-		rightChildIndex = 2 * index + 2;
-		biggerChildIndex = leftChildIndex;
-
-		if (biggerChildIndex >= heapSize)
-			break;
 
 		if (biggerChildIndex + 1 < heapSize && data[biggerChildIndex] < data[biggerChildIndex + 1])
 			++biggerChildIndex;
 
-		if (data[biggerChildIndex] < data[index])
+		if (biggerChildIndex >= heapSize)
 			break;
 
-		swap(data, biggerChildIndex, index);
+		if (data[biggerChildIndex] < data[originalIndex])
+			break;
+
+		data[index] = data[biggerChildIndex];
 		index = biggerChildIndex;
+		biggerChildIndex = 2 * index + 1;
+		//swap(data, index, biggerChildIndex);
 	}
+
+	data[index] = data[originalIndex];
 
 	// Recursion hurts performance?
 

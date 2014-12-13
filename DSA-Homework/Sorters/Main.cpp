@@ -1,86 +1,113 @@
-#include "InsertionSort.hpp"
+#include "SortTesterClass.hpp"
 #include "QuickSort.hpp"
-#include "HeapSort.hpp"
 #include "MergeSort.hpp"
+#include "InsertionSort.hpp"
+#include "HeapSort.hpp"
 #include "ShellSort.hpp"
-
 #include <iostream>
- 
-bool isSorted(int* data[], size_t arrays, size_t count) {
-	for (size_t i = 1; i < arrays; i++) {
-		for (size_t j = 0; j < count; ++j) {
-			if (data[i][j] != data[0][j]) {
-				std::cout << data[0][j] << " != " << data[i][j] << std::endl;
-				std::cout << "Not sorted: " << i << std::endl;
-				return false;
-			}
-		}
+
+// Testing structure
+struct MyStruct {
+	int a[49];
+	int index;
+	bool operator<(MyStruct& rhs) const {
+		return this->index < rhs.index;
 	}
-	//for (size_t i = 1; i < count; ++i) {
-	//	if (data[i - 1] > data[i])
-	//		return false;
-	//}
-	return true;
-}
+	bool operator>=(MyStruct& rhs) const {
+		return !(*this < rhs);
+	}
+	bool operator>(MyStruct& rhs) const {
+		return this->index > rhs.index;
+	}
+	bool operator<=(MyStruct& rhs) const {
+		return !(*this > rhs);
+	}
+	bool operator==(MyStruct& rhs) const {
+		return this->index == rhs.index;
+	}
+	bool operator!=(MyStruct& rhs) const {
+		return !(*this == rhs);
+	}
+	MyStruct& operator=(int v) {
+		index = v;
+		return *this;
+	}
+};
 
 int main() {
-	QuickSort<int> quick;
-	InsertionSort<int> insertion;
-	HeapSort<int> heap;
-	MergeSort<int> merge;
-	ShellSort<int> shell;
 
-	int *data, *data2, *data3, *data4, *data5;
+	std::cout << "Initializing data and runnig sort algorithms...\n\n";
 
-	size_t count = 1000000;
+	try {
+		Sorter<int> ** sorters = new Sorter<int>*[5];
+		sorters[0] = new QuickSort<int>();
+		sorters[1] = new HeapSort<int>();
+		sorters[2] = new MergeSort<int>();
+		sorters[3] = new ShellSort<int>();
+		sorters[4] = new InsertionSort<int>();
 
-	data = new int[count];
-	data2 = new int[count];
-	data3 = new int[count];
-	data4 = new int[count];
-	data5 = new int[count];
+		SortTesterClass<int> intTester(sorters, 4); // Without insertion as it is very slow
+		intTester.getSummary(std::cout);
+		std::cout << std::endl;
 
-	for (size_t i = 0; i < count; i++) {
-		data[i] = data2[i] = data3[i] = data4[i] = data5[i] = rand() % 5000;
+		for (size_t i = 0; i < 5; i++) {
+			delete sorters[i];
+		}
+
 	}
-#ifdef _DEBUG1
-	for (size_t i = 0; i < count; i++) {
-		std::cout << data[i] << " ";
+	catch (std::bad_alloc ex) {
+		std::cerr << "Unable to initialize sorters!";
 	}
-	std::cout << std::endl;
-#endif
 
-	// head
+	std::cout << "Initializing data and runnig sort algorithms...\n\n";
 
-	heap.sort(data, count);
-	std::cout << heap.getSortTime() << " ticks heap." << std::endl;
-	quick.sort(data2, count); 
-	std::cout << quick.getSortTime() << " ticks quick." << std::endl;
-	merge.sort(data4, count);
-	std::cout << merge.getSortTime() << " ticks merge." << std::endl;
-	shell.sort(data5, count);
-	std::cout << shell.getSortTime() << " ticks shell." << std::endl;
-	//insertion.sort(data3, count);
-	//std::cout << insertion.getSortTime() << " ticks insertion." << std::endl;
+	try {
+		Sorter<double> ** sorters = new Sorter<double>*[5];
+		sorters[0] = new QuickSort<double>();
+		sorters[1] = new HeapSort<double>();
+		sorters[2] = new MergeSort<double>();
+		sorters[3] = new ShellSort<double>();
+		sorters[4] = new InsertionSort<double>();
 
-	// foot
-#ifdef _DEBUG1
-	for (size_t i = 0; i < count; i++) {
-		std::cout << data[i] << " ";
+		SortTesterClass<double> intTester(sorters, 4); // Without insertion as it is very slow
+		intTester.getSummary(std::cout);
+		std::cout << std::endl;
+
+		for (size_t i = 0; i < 5; i++) {
+			delete sorters[i];
+		}
+
 	}
-	std::cout << std::endl;
+	catch (std::bad_alloc ex) {
+		std::cerr << "Unable to initialize sorters!";
+	}
 
-#endif
-	int* arrays[] = {data, data2, data4, data5};
-	bool sorted = isSorted(arrays, 4, count);
-	std::cout << "Sorted: " << sorted << std::endl;
-	//std::cout << "Heap swaps: " << heap.getSwapsCount() << std::endl;
-	//if (!sorted) {
-		//for (size_t i = 0; i < count; i++) {
-		//	std::cout << data[i] << " ";
-		//}
-	std::cout << std::endl;
-	//}
+	std::cout << "Initializing data and runnig sort algorithms...\n\n";
+	
+	try {
+		Sorter<MyStruct> ** sorters = new Sorter<MyStruct>*[5];
+		sorters[0] = new QuickSort<MyStruct>();
+		sorters[1] = new HeapSort<MyStruct>();
+		sorters[2] = new MergeSort<MyStruct>();
+		sorters[3] = new ShellSort<MyStruct>();
+		sorters[4] = new InsertionSort<MyStruct>();
+	
+		SortTesterClass<MyStruct> intTester(sorters, 4); // Without insertion as it is very slow
+		intTester.getSummary(std::cout);
+		std::cout << std::endl;
+	
+		for (size_t i = 0; i < 5; i++) {
+			delete sorters[i];
+		}
+	
+	}
+	catch (std::bad_alloc ex) {
+		std::cerr << "Unable to initialize sorters!";
+	}
+
+
+	
+
 	return 0;
 }
 

@@ -1,7 +1,8 @@
+#pragma once
 #include "Sorter.h"
-
+#include <ctime>
 template <class T>
-class QuickSort : Sorter <T> {
+class QuickSort : public Sorter <T> {
 public:
 	virtual unsigned long long getSortTime() const;
 
@@ -11,6 +12,7 @@ private:
 	size_t getPivotIndex(T* data, size_t count);
 	void swap(T* data, size_t leftIndex, size_t rightIndex);
 	size_t partition(T* data, size_t count, size_t pivotIndex);
+	void quicksort(T* data, size_t count);
 
 	clock_t time = 0;
 	bool timeInit = false;
@@ -75,7 +77,7 @@ size_t QuickSort<T>::partition(T* data, size_t count, size_t pivotIndex) {
 }
 
 template <class T>
- void QuickSort<T>::sort(T* data, size_t count) {
+ void QuickSort<T>::quicksort(T* data, size_t count) {
 	if (!timeInit) { 
 		time = clock();
 		timeInit = true;
@@ -109,8 +111,23 @@ template <class T>
 	std::cout << std::endl;
 #endif
 
-	sort(data, separationIndex);
-	sort(data + separationIndex + 1, count - separationIndex - 1);
+	quicksort(data, separationIndex);
+	quicksort(data + separationIndex + 1, count - separationIndex - 1);
 
-	time = clock() - time;
+#ifdef _DEBUG1
+	std::cout << "\tAfter sort:\n";
+	for (size_t i = 0; i < count; i++) {
+		std::cout << data[i] << " ";
+	}
+	std::cout << std::endl;
+#endif
 }
+
+ template <class T>
+ void QuickSort<T>::sort(T* data, size_t count) {
+	 time = clock();
+
+	 quicksort(data, count);
+
+	 time = clock() - time;
+ }

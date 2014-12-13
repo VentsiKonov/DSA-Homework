@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Sorters">
+      <UniqueIdentifier>{f51f1406-db06-4a3f-80b1-5b0ad41f8fdf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sorter.h">
@@ -21,19 +24,22 @@
     <ClInclude Include="SortTester.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InsertionSort.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="QuickSort.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HeapSort.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Sorters</Filter>
+    </ClInclude>
+    <ClInclude Include="InsertionSort.hpp">
+      <Filter>Header Files\Sorters</Filter>
     </ClInclude>
     <ClInclude Include="MergeSort.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Sorters</Filter>
+    </ClInclude>
+    <ClInclude Include="QuickSort.hpp">
+      <Filter>Header Files\Sorters</Filter>
     </ClInclude>
     <ClInclude Include="ShellSort.hpp">
+      <Filter>Header Files\Sorters</Filter>
+    </ClInclude>
+    <ClInclude Include="SortTesterClass.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
