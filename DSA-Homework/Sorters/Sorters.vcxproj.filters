@@ -33,6 +33,9 @@
     <ClInclude Include="MergeSort.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ShellSort.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">

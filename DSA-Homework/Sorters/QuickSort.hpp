@@ -92,7 +92,7 @@ template <class T>
 
 	size_t pivotIndex = getPivotIndex(data, count);
 
-#ifdef _DEBUG
+#ifdef _DEBUG1
 	std::cout << "\tBefore partitioning:\n";
 	for (size_t i = 0; i < count; i++) {
 		std::cout << (i == pivotIndex ? "[" : "") << data[i] << (i == pivotIndex ? "]" : "") << " ";
@@ -101,7 +101,7 @@ template <class T>
 #endif
 
 	size_t separationIndex = partition(data, count, pivotIndex);
-#ifdef _DEBUG
+#ifdef _DEBUG1
 	std::cout << "\tAfter partitioning:\n";
 		for (size_t i = 0; i < count; i++) {
 			std::cout << data[i] << " ";

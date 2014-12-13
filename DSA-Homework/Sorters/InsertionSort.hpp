@@ -24,7 +24,7 @@ void InsertionSort<T>::sort(T* data, size_t count) {
 	T inHand;
 	size_t index;
 	for (size_t i = 1; i < count; i++) {
-#ifdef _DEBUG
+#ifdef _DEBUG1
 		for (size_t j = 0; j < count; j++) {
 			std::cout << data[j] << " ";
 		}
