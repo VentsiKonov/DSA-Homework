@@ -13,7 +13,7 @@ private:
 	}
 
 	T* workArray;
-	time_t time;
+	time_t time = 0;
 };
 
 template <class T>
@@ -75,5 +75,5 @@ void MergeSort<T>::sort(T* data, size_t count) {
 
 	delete[] workArray;
 
-	time = time - clock();
+	time = clock() - time;
 }

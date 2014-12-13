@@ -20,13 +20,16 @@ int main() {
 	HeapSort<int> heap;
 	MergeSort<int> merge;
 
-	int *data, *data2, *data3;
-	size_t count = 0;
+	int *data, *data2, *data3, *data4;
+
+	size_t count = 1000000;
+
 	data = new int[count];
 	data2 = new int[count];
 	data3 = new int[count];
+	data4 = new int[count];
 	for (size_t i = 0; i < count; i++) {
-		data[i] = data2[i] = data3[i] = rand() % 5000;
+		data[i] = data2[i] = data3[i] = data4[i] = rand() % 5000;
 	}
 #ifdef _DEBUG
 	for (size_t i = 0; i < count; i++) {
@@ -38,24 +41,25 @@ int main() {
 
 	// head
 
-	//heap.sort(data, count);
-	//std::cout << heap.getSortTime() << " ticks heap." << std::endl;
-	//quick.sort(data2, count); 
-	//std::cout << quick.getSortTime() << " ticks quick." << std::endl;
-	//insertion.sort(data3, count);
-	//std::cout << insertion.getSortTime() << " ticks insertion." << std::endl;
+	heap.sort(data, count);
+	std::cout << heap.getSortTime() << " ticks heap." << std::endl;
+	quick.sort(data2, count); 
+	std::cout << quick.getSortTime() << " ticks quick." << std::endl;
+	merge.sort(data4, count);
+	std::cout << merge.getSortTime() << " ticks merge." << std::endl;
+	insertion.sort(data3, count);
+	std::cout << insertion.getSortTime() << " ticks insertion." << std::endl;
 
-	merge.sort(data, count);
 
 	// foot
-	bool sorted = isSorted(data, count);
-	std::cout << "Sorted: " << sorted << std::endl;
-	if (!sorted) {
+	//bool sorted = isSorted(data, count);
+	//std::cout << "Sorted: " << sorted << std::endl;
+	//if (!sorted) {
 		//for (size_t i = 0; i < count; i++) {
 		//	std::cout << data[i] << " ";
 		//}
 		std::cout << std::endl;
-	}
+	//}
 	return 0;
 }
 
