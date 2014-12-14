@@ -39,29 +39,6 @@ int main() {
 	std::cout << "Initializing data and runnig sort algorithms...\n\n";
 
 	try {
-		Sorter<int> ** sorters = new Sorter<int>*[5];
-		sorters[0] = new QuickSort<int>();
-		sorters[1] = new HeapSort<int>();
-		sorters[2] = new MergeSort<int>();
-		sorters[3] = new ShellSort<int>();
-		sorters[4] = new InsertionSort<int>();
-
-		SortTesterClass<int> intTester(sorters, 4); // Without insertion as it is very slow
-		intTester.getSummary(std::cout);
-		std::cout << std::endl;
-
-		for (size_t i = 0; i < 5; i++) {
-			delete sorters[i];
-		}
-
-	}
-	catch (std::bad_alloc ex) {
-		std::cerr << "Unable to initialize sorters!";
-	}
-
-	std::cout << "Initializing data and runnig sort algorithms...\n\n";
-
-	try {
 		Sorter<double> ** sorters = new Sorter<double>*[5];
 		sorters[0] = new QuickSort<double>();
 		sorters[1] = new HeapSort<double>();
@@ -69,7 +46,7 @@ int main() {
 		sorters[3] = new ShellSort<double>();
 		sorters[4] = new InsertionSort<double>();
 
-		SortTesterClass<double> intTester(sorters, 4); // Without insertion as it is very slow
+		SortTesterClass<double> intTester(sorters, 4);
 		intTester.getSummary(std::cout);
 		std::cout << std::endl;
 
@@ -92,7 +69,7 @@ int main() {
 		sorters[3] = new ShellSort<MyStruct>();
 		sorters[4] = new InsertionSort<MyStruct>();
 	
-		SortTesterClass<MyStruct> intTester(sorters, 4); // Without insertion as it is very slow
+		SortTesterClass<MyStruct> intTester(sorters, 4);
 		intTester.getSummary(std::cout);
 		std::cout << std::endl;
 	
@@ -103,10 +80,7 @@ int main() {
 	}
 	catch (std::bad_alloc ex) {
 		std::cerr << "Unable to initialize sorters!";
-	}
-
-
-	
+	}	
 
 	return 0;
 }
