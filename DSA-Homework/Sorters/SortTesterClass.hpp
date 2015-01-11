@@ -35,7 +35,7 @@ SortTesterClass<T>::SortTesterClass(Sorter<T> ** sorters, int count)
 	this->sorters = sorters;
 	this->sortersCount = count;
 	srand(time(NULL));
-	dataSize = 1000000;//rand() * 100;
+	dataSize = 100000;//rand() * 100;
 	times = new size_t*[count];
 	testsCount = 4;
 	for (size_t i = 0; i < count; i++) {

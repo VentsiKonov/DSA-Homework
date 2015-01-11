@@ -16,7 +16,7 @@ protected:
 public:
 	class Iterator {
 	private:
-		Node* current;	
+		Node* current;
 
 	public:
 		Iterator(Node* first) : current(first){}

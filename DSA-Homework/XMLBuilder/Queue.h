@@ -1,6 +1,5 @@
 #pragma once
 #include "List.h"
-#include "Queue.h"
 
 template <class T>
 class Queue : protected List<T> {
