@@ -1,0 +1,52 @@
+Initializing data and runnig sort algorithms...
+
+For each algorithm was supplied and array of data with size: 250000
+Size of one entry in the data is: 8
+Total data size: 2000000
+Quick Sort:
+	                    Sorted data:         31 ticks.
+	 Half-sorted, half-reverse data:         93 ticks.
+	                   Reverse data:         47 ticks.
+	                    Random data:         78 ticks.
+Heap Sort:
+	                    Sorted data:         47 ticks.
+	 Half-sorted, half-reverse data:         47 ticks.
+	                   Reverse data:         15 ticks.
+	                    Random data:         47 ticks.
+Merge Sort:
+	                    Sorted data:         31 ticks.
+	 Half-sorted, half-reverse data:         31 ticks.
+	                   Reverse data:         47 ticks.
+	                    Random data:         47 ticks.
+Shell Sort:
+	                    Sorted data:         16 ticks.
+	 Half-sorted, half-reverse data:         63 ticks.
+	                   Reverse data:         63 ticks.
+	                    Random data:        297 ticks.
+
+Initializing data and runnig sort algorithms...
+
+For each algorithm was supplied and array of data with size: 250000
+Size of one entry in the data is: 200
+Total data size: 50000000
+Quick Sort:
+	                    Sorted data:        229 ticks.
+	 Half-sorted, half-reverse data:       1007 ticks.
+	                   Reverse data:        406 ticks.
+	                    Random data:        357 ticks.
+Heap Sort:
+	                    Sorted data:        344 ticks.
+	 Half-sorted, half-reverse data:        484 ticks.
+	                   Reverse data:        109 ticks.
+	                    Random data:        468 ticks.
+Merge Sort:
+	                    Sorted data:        386 ticks.
+	 Half-sorted, half-reverse data:        390 ticks.
+	                   Reverse data:        391 ticks.
+	                    Random data:        438 ticks.
+Shell Sort:
+	                    Sorted data:        269 ticks.
+	 Half-sorted, half-reverse data:        406 ticks.
+	                   Reverse data:        516 ticks.
+	                    Random data:       1625 ticks.
+

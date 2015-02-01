@@ -1,0 +1,62 @@
+Initializing data and runnig sort algorithms...
+
+For each algorithm was supplied and array of data with size: 50000
+Size of one entry in the data is: 8
+Total data size: 400000
+Quick Sort:
+	                    Sorted data:          0 ticks.
+	 Half-sorted, half-reverse data:         15 ticks.
+	                   Reverse data:         16 ticks.
+	                    Random data:         16 ticks.
+Heap Sort:
+	                    Sorted data:         15 ticks.
+	 Half-sorted, half-reverse data:         16 ticks.
+	                   Reverse data:          0 ticks.
+	                    Random data:         15 ticks.
+Merge Sort:
+	                    Sorted data:         16 ticks.
+	 Half-sorted, half-reverse data:          0 ticks.
+	                   Reverse data:         15 ticks.
+	                    Random data:          0 ticks.
+Shell Sort:
+	                    Sorted data:          0 ticks.
+	 Half-sorted, half-reverse data:          0 ticks.
+	                   Reverse data:          0 ticks.
+	                    Random data:         47 ticks.
+Insertion Sort:
+	                    Sorted data:          0 ticks.
+	 Half-sorted, half-reverse data:       1527 ticks.
+	                   Reverse data:       3065 ticks.
+	                    Random data:       1547 ticks.
+
+Initializing data and runnig sort algorithms...
+
+For each algorithm was supplied and array of data with size: 50000
+Size of one entry in the data is: 200
+Total data size: 10000000
+Quick Sort:
+	                    Sorted data:         31 ticks.
+	 Half-sorted, half-reverse data:         93 ticks.
+	                   Reverse data:         69 ticks.
+	                    Random data:         65 ticks.
+Heap Sort:
+	                    Sorted data:         63 ticks.
+	 Half-sorted, half-reverse data:         63 ticks.
+	                   Reverse data:         31 ticks.
+	                    Random data:         83 ticks.
+Merge Sort:
+	                    Sorted data:         54 ticks.
+	 Half-sorted, half-reverse data:         47 ticks.
+	                   Reverse data:         55 ticks.
+	                    Random data:         73 ticks.
+Shell Sort:
+	                    Sorted data:         18 ticks.
+	 Half-sorted, half-reverse data:         47 ticks.
+	                   Reverse data:         83 ticks.
+	                    Random data:        220 ticks.
+Insertion Sort:
+	                    Sorted data:         16 ticks.
+	 Half-sorted, half-reverse data:      28862 ticks.
+	                   Reverse data:      79418 ticks.
+	                    Random data:      40031 ticks.
+
